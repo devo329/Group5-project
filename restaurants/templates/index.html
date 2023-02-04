@@ -52,42 +52,19 @@
 
      <!--Cards-->
      <div class="row" style="padding: 50px">
+      {% for restaurant in all_restaurant %}
         <div class="col-sm-4">
           <div class="card">
-            <img src="{% static 'Mcdonalds-card.jpg' %}" class="card-img-top" alt="...">
+            <img src="/static/{{restaurant.image_name}}" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">Mcdonald's</h5>
+              <h5 class="card-title">{{restaurant.name}}</h5>
               <p class="card-text"></p>
               <a href="https://www.doordash.com" class="btn btn-primary">Menu</a>
             </div>
           </div>
         </div>
-        <div class="col-sm-4">
-          <div class="card">
-            <img src="{% static 'Wendys-card.jpg' %}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Wendy's</h5>
-              <p class="card-text"></p>
-              <a href="#" class="btn btn-primary" style="background-color:">Menu</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-            <div class="card">
-            <img src="{% static 'chick-card.jpg' %}"class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Chick-fil-A</h5>
-                <p class="card-text"></p>
-                <a href="#" class="btn btn-primary">Menu</a>
-              </div>
-            </div>
-          </div>
-        </div>
+      {% endfor %}
       </div>
     <!--Cards-->
-
-
-
 </body>
 </html>

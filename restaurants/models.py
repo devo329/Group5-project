@@ -28,6 +28,7 @@ class Restaurant(models.Model):
     owner = models.OneToOneField(Owner, null=True, on_delete=models.CASCADE, primary_key=False)
     uber_delivery_time = models.CharField(max_length=10, default='0 Mins')
     doordash_delivery_time = models.CharField(max_length=10, default='0 Mins')
+    image_name = models.CharField(max_length=30,default='')
 
 
     def __str__(self) -> str:
