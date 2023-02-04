@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,7 +54,7 @@
      <div class="row" style="padding: 50px">
         <div class="col-sm-4">
           <div class="card">
-            <img src="assets\Mcdonalds-card.jpg" class="card-img-top" alt="...">
+            <img src="{% static 'Mcdonalds-card.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">Mcdonald's</h5>
               <p class="card-text"></p>
@@ -63,7 +64,7 @@
         </div>
         <div class="col-sm-4">
           <div class="card">
-            <img src="assets\Wendys-card.jpg" class="card-img-top" alt="...">
+            <img src="{% static 'Wendys-card.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">Wendy's</h5>
               <p class="card-text"></p>
@@ -74,7 +75,7 @@
 
         <div class="col-sm-4">
             <div class="card">
-            <img src="assets\chick-card.jpg" class="card-img-top" alt="...">
+            <img src="{% static 'chick-card.jpg' %}"class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">Chick-fil-A</h5>
                 <p class="card-text"></p>
@@ -86,7 +87,7 @@
       </div>
     <!--Cards-->
 
-    
+
 
 </body>
 </html>
