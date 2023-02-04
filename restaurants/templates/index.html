@@ -55,7 +55,7 @@
       {% for restaurant in all_restaurant %}
         <div class="col-sm-4">
           <div class="card">
-            <img src="{% static 'Mcdonalds-card.jpg' %}" class="card-img-top" alt="...">
+            <img src="/static/{{restaurant.image_name}}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">{{restaurant.name}}</h5>
               <p class="card-text"></p>
