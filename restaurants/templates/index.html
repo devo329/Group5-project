@@ -54,9 +54,9 @@
      <!--Cards-->
      <div class="row" style="padding: 50px">
       {% for restaurant in all_restaurant %}
-        <div class="col-sm-4">
+        <div class="col-sm-4" style="padding-bottom: 20px;">
           <div class="card">
-            <img src="/static/{{restaurant.image_name}}" class="card-img-top" alt="...">
+            <img src="/static/restaurant/{{restaurant.image_name}}" style="width: 100%;" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">{{restaurant.name}}</h5>
               <p class="card-text"></p>

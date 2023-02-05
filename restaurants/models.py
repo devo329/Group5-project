@@ -12,9 +12,11 @@ class Owner(models.Model):
         return self.first_name + ' ' + self.last_name
 
 class FoodItem(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=60)
     doordash_price = models.DecimalField(max_digits = 5, decimal_places=2, default=0.0)
     uber_price = models.DecimalField(max_digits = 5, decimal_places=2, default=0.0)
+    type = models.CharField(max_length=30, default='')
+    image_name = models.CharField(max_length=30,default='')
 
     def __str__(self) -> str:
         return self.name
@@ -42,15 +44,16 @@ class Menu(models.Model):
         return self.restaurant.name + " Menu"
 
 
-class Reviews(models.Model):
-    Reviewer = models.OneToOneField(User, null=True, on_delete=models.CASCADE, primary_key=False)
-    rating = models.IntegerField(default=0)
-    review = models.TextField(default='')
 
-    def __str__(self) -> str:
-        return self.Reviewer.username + " - " + str(self.rating)
+# class Reviews(models.Model):
+#     Reviewer = models.OneToOneField(User, null=True, on_delete=models.CASCADE, primary_key=False)
+#     rating = models.IntegerField(default=0)
+#     review = models.TextField(default='')
 
-class Ratings(models.Model):
-    restaurant = models.OneToOneField(Restaurant, on_delete=models.CASCADE, primary_key=True, default= '')
-    reviews = models.ManyToManyField(Reviews)
+#     def __str__(self) -> str:
+#         return self.Reviewer.username + " - " + str(self.rating)
+
+# class Ratings(models.Model):
+#     restaurant = models.OneToOneField(Restaurant, on_delete=models.CASCADE, primary_key=True, default= '')
+#     reviews = models.ManyToManyField(Reviews)
 

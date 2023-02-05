@@ -54,20 +54,27 @@
      <!--Bootstrap JS-->
     <!-- Restaurant Info -->
      <!--Cards-->
-     <div class="row" style="padding: 50px">
+
+     <div class="row" style="padding: 50px;">
+      <h1>Menu</h2>
+      <hr>
+      <br>
+      <h2>All Items:</h2>
+      <hr>
       {% for item in menu %}
-        <div class="col-sm-4">
-          <div class="card">
-            <img src="/static/{{restaurant.image_name}}" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">{{item.name}}</h5>
-              <p class="card-text">Doordash Price: {{item.doordash_price}}</p>
-              <p class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-            </div>
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="/static/fooditem/{{item.image_name}}" style= "width:75%;" class="card-img-top" alt="...">
+          <hr>
+          <div class="card-body">
+            <h5 class="card-title">{{item.name}}</h5>
+            <p class="card-text">Doordash Price: {{item.doordash_price}}</p>
+            <p class="card-text">Uber Eats Price: {{item.uber_price}}</p>
           </div>
         </div>
-      {% endfor %}
-
+      </div>
+    {% endfor %}
+    
       </div>
     <!--Cards-->
 </body>

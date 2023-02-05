@@ -14,7 +14,6 @@ def index(request):
 
 def restaurant(request):
     id = request.GET.get('id')
-    print(id)
     menu = FoodItem.objects.filter(menu__restaurant__name = id)
     info = Restaurant.objects.filter(name = id)
     context = {'menu' : menu,'restaurant': info}
