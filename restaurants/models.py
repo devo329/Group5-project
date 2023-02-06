@@ -31,6 +31,7 @@ class Restaurant(models.Model):
     uber_delivery_time = models.CharField(max_length=10, default='0 Mins')
     doordash_delivery_time = models.CharField(max_length=10, default='0 Mins')
     image_name = models.CharField(max_length=30,default='')
+    banner_name = models.CharField(max_length=30,default='')
 
 
     def __str__(self) -> str:
@@ -42,6 +43,7 @@ class Menu(models.Model):
 
     def __str__(self) -> str:
         return self.restaurant.name + " Menu"
+    
 
 
 
