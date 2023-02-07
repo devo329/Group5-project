@@ -7,6 +7,9 @@ import restaurants
 from .models import *
 from django.shortcuts import render
 
+def loading_screen(request):
+    return render(request, 'loading.html')
+
 def index(request):
     restaurants = Restaurant.objects.values()
     context = {'all_restaurant' : restaurants}
