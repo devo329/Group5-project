@@ -5,11 +5,22 @@ import restaurants
 
 # Create your views here.
 from .models import *
+from django.db.models import Avg
 from django.shortcuts import render
 
+def getRatings(restaurants):
+    restaurant_rating_data = []
+    for restaurant in restaurants:
+        ratings = restaurant.reviews_set.all().aggregate(Avg('rating'))
+        avg_rating = ratings['rating__avg']
+        restaurant_rating_data.append({'restaurant': restaurant, 'avg_rating': avg_rating})
+
+    return restaurant_rating_data
+
 def index(request):
-    restaurants = Restaurant.objects.values()
-    context = {'all_restaurant' : restaurants}
+    restaurants = Restaurant.objects.all()
+    restaurant_rating_data = getRatings(restaurants)
+    context = {'restaurant_rating_data': restaurant_rating_data}
     return render(request, "index.html", context)
 
 def restaurant(request):
