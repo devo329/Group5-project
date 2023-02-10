@@ -129,9 +129,9 @@
       <h2>All Items:</h2>
       <hr>
       {% for item in menu %}
-      <div class="col-sm-4 mx-auto" style="padding-bottom: 20px; width: 400px;">
+      <div class="col-sm-4" style="padding-bottom: 20px;">
         <div class="card">
-          <img src="/static/fooditem/{{item.image_name}}" style= "height: 170px; object-fit: cover;" class="card-img-top" alt="...">
+          <img src="/static/fooditem/{{item.image_name}}" style= "height: 300px; object-fit: cover;" class="card-img-top" alt="...">
           
           <div class="card-body">
             <h5 class="card-title">{{item.name}}</h5>
