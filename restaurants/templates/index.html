@@ -27,7 +27,7 @@
         </li>
         {% for data in restaurant_rating_data %}
         <li class="nav-item">
-          <a class="nav-link" href="/restaurant/?id={{restaurant.name}}">{{data.restaurant.name}}</a>
+          <a class="nav-link" href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
         </li>
         {% endfor %}
       </ul>
@@ -52,11 +52,11 @@
       {% for data in restaurant_rating_data %}
       <div class="col-sm-4" style="padding-bottom: 20px;">
           <div class="card">
-            <img src="/static/restaurant/{{restaurant.image_name}}" style="width: 100%;" class="card-img-top" alt="...">
+            <img src="/static/restaurant/{{data.restaurant.image_name}}" style="width: 100%;" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title">{{data.restaurant.name}}</h5>
               <p class="card-text"> Average Rating: {{ data.avg_rating }}</p>
-              <a href="/restaurant/?id={{restaurant.name}}" class="btn btn-primary">Menu</a>
+              <a href="/restaurant/?id={{data.restaurant.name}}" class="btn btn-primary">Menu</a>
             </div>
           </div>
         </div>
