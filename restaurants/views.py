@@ -25,8 +25,10 @@ def index(request):
 def restaurant(request):
     id = request.GET.get('id')
     menu = FoodItem.objects.filter(menu__restaurant__name = id)
+    featured = FoodItem.objects.all().order_by('-likes')[:3]
+    print(featured)
     info = Restaurant.objects.filter(name = id)
-    context = {'menu' : menu,'restaurant': info}
+    context = {'menu' : menu,'restaurant': info, 'featured' : featured}
     return render(request, "restaurant.html", context)
 
 @login_required
