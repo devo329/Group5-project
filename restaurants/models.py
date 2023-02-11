@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -18,6 +19,10 @@ class FoodItem(models.Model):
     uber_price = models.DecimalField(max_digits = 5, decimal_places=2, default=0.0)
     type = models.CharField(max_length=30, default='')
     image_name = models.CharField(max_length=30,default='')
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+    likers = models.ManyToManyField(User, related_name='likers', blank=True)
+    dislikers = models.ManyToManyField(User, related_name='dislikers', blank=True)
 
     def __str__(self) -> str:
         return self.name
