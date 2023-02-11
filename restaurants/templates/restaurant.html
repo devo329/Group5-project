@@ -60,11 +60,12 @@
      <!--Bootstrap JS-->
 
     <!-- Name + Banner -->
-    <div class="container-md" style="padding: 20px;">
-      <h3 class="card-title">{{restaurant.name}}</h3>
-      <img src="/static/banners/{{restaurant.banner_name}}"
-        style="height: 250px; border-radius:55px; object-fit: cover; " class="card-img-top" alt="...">
-    </div>
+    {% for restaurant in restaurant %}
+    <div class="card text-center">
+      <!-- Address -->
+     <div class="card-header">
+       {{restaurant.address}}
+     </div>
 
       <!-- Name + Banner -->
       <div class="container-md" style="padding: 20px; ">
