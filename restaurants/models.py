@@ -20,9 +20,7 @@ class FoodItem(models.Model):
     type = models.CharField(max_length=30, default='')
     image_name = models.CharField(max_length=30,default='')
     likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
     likers = models.ManyToManyField(User, related_name='likers', blank=True)
-    dislikers = models.ManyToManyField(User, related_name='dislikers', blank=True)
 
     def __str__(self) -> str:
         return self.name
