@@ -6,13 +6,26 @@ from django.db.models import Avg
 
 import restaurants
 
+from django.template import Library
+
+register = Library()
+
 # Create your views here.
+
+@register.filter
+def get_range( value ):
+  return range( value )
+
 def getRatings(restaurants):
     restaurant_rating_data = []
     for restaurant in restaurants:
         ratings = restaurant.reviews_set.all().aggregate(Avg('rating'))
         avg_rating = ratings['rating__avg']
-        restaurant_rating_data.append({'restaurant': restaurant, 'avg_rating': avg_rating})
+        if isinstance(avg_rating, float):
+            avg_rating = int(avg_rating)
+            restaurant_rating_data.append({'restaurant': restaurant, 'avg_rating': avg_rating})
+        else:
+            restaurant_rating_data.append({'restaurant': restaurant, 'avg_rating': avg_rating})
 
     return restaurant_rating_data
 
@@ -46,11 +59,3 @@ def like(request, item_id, restaurant_id):
         item.save()
 
     return redirect(reverse('restaurant') + "?id=" + restaurant_id)
-
-
-
-
-
-
-
-
