@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class Type(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, primary_key=True)
 
     def __str__(self) -> str:
         return self.name
@@ -23,7 +23,8 @@ class FoodItem(models.Model):
     doordash_price = models.DecimalField(max_digits = 5, decimal_places=2, default=0.0)
     uber_price = models.DecimalField(max_digits = 5, decimal_places=2, default=0.0)
     image_name = models.CharField(max_length=30,default='')
-    type = models.CharField(max_length=30)
+    #type = models.CharField(max_length=30)
+    food_type = models.ForeignKey(Type,on_delete=models.CASCADE,default='Entree')
     likes = models.IntegerField(default=0)
     likers = models.ManyToManyField(User, related_name='likers', blank=True)
 
