@@ -117,7 +117,7 @@
       <h3 style="color: black;">Information:</h3>
       <hr>
       <div class="row" style="padding: 25px;">
-        <div class="col-sm-4" style="padding-bottom: 10px;">
+        <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title" style="color:black">Price Range</h5>
@@ -126,7 +126,7 @@
           </div>
         </div>
 
-        <div class="col-sm-4" style="padding-bottom: 10px;">
+        <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title" style="color:black">Cuisine:</h5>
@@ -135,11 +135,54 @@
           </div>
         </div>
 
-        <div class="col-sm-4" style="padding-bottom: 10px;">
+        <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title" style="color:black">Phone Number:</h5>
               <h5 class="card-text" style="color:black">{{restaurant.phone}}</h5>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3" style="padding-bottom: 10px;">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" style="color:black">Ratings:</h5>
+              <h5 style="color:black" class="card-text">
+              {%if rating is None%}
+                No Reviews
+              {% elif rating is 1%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif rating is 2%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif rating is 3%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif rating is 4%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif rating is 5%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              {% endif %}
+              </h5>
             </div>
           </div>
         </div>
@@ -181,44 +224,50 @@
 
       <h2>All Items:</h2>
       <hr>
-      {% for item in menu %}
-      <div class="col-sm-4" style="padding-bottom: 20px;">
-        <div class="card">
-          <img src="/static/fooditem/{{item.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top"
-            alt="...">
+      {% for category in categories%}
+      <h2>{{category}}</h2>
+      <hr>
+        {% for item in menu %}
+        {%if item.type in category%}
+        <div class="col-sm-4" style="padding-bottom: 20px;">
+          <div class="card">
+            <img src="/static/fooditem/{{item.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top"
+              alt="...">
 
-          <div class="card-body">
-            <h5 class="card-title">{{item.name}}</h5>
-            {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
-              {{item.doordash_price}}</p>
-              <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-              {% else %}
-              <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
-              <p style="color:red;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-              {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{item.name}}</h5>
+              {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
+                {{item.doordash_price}}</p>
+                <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
+                {% else %}
+                <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
+                <p style="color:red;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
+                {% endif %}
+            </div>
+
+            <div class="card-footer d-flex align-items-end justify-content-end">
+              {% for restaurant in restaurant %}
+              <form action="{% url 'like' item.id restaurant.name %}" method="post">
+                {% csrf_token %}
+                {% if user in item.likers.all %}
+                <button class="button button-like liked">
+                  <i class="fa fa-heart"></i>
+                  <span>Likes: {{ item.likes }} </span>
+                </button>
+                {% else %}
+                <button class="button button-like">
+                  <i class="fa fa-heart"></i>
+                  <span>Likes: {{ item.likes }} </span>
+                </button>
+                {% endif %}
+                {% endfor %}
+              </form>
+            </div>
+
           </div>
-
-          <div class="card-footer d-flex align-items-end justify-content-end">
-            {% for restaurant in restaurant %}
-            <form action="{% url 'like' item.id restaurant.name %}" method="post">
-              {% csrf_token %}
-              {% if user in item.likers.all %}
-              <button class="button button-like liked">
-                <i class="fa fa-heart"></i>
-                <span>Likes: {{ item.likes }} </span>
-              </button>
-              {% else %}
-              <button class="button button-like">
-                <i class="fa fa-heart"></i>
-                <span>Likes: {{ item.likes }} </span>
-              </button>
-              {% endif %}
-              {% endfor %}
-            </form>
-          </div>
-
         </div>
-      </div>
+        {%endif%}
+        {% endfor %}
       {% endfor %}
   </div>
   <!--Cards-->

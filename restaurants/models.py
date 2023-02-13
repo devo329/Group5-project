@@ -4,8 +4,6 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
-
-
 class Owner(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -37,7 +35,6 @@ class Restaurant(models.Model):
     doordash_delivery_time = models.CharField(max_length=10, default='0 Mins')
     image_name = models.CharField(max_length=30,default='')
     banner_name = models.CharField(max_length=30,default='')
-
 
     def __str__(self) -> str:
         return self.name
