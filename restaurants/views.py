@@ -38,10 +38,17 @@ def index(request):
 def restaurant(request):
     id = request.GET.get('id')
     menu = FoodItem.objects.filter(menu__restaurant__name = id)
+    categories = FoodItem.objects.filter(menu__restaurant__name = id).values_list('type', flat=True).distinct().order_by('-name')
     featured = FoodItem.objects.filter(menu__restaurant__name = id).order_by('-likes')[:3]
-    print(featured)
     info = Restaurant.objects.filter(name = id)
-    context = {'menu' : menu,'restaurant': info, 'featured' : featured}
+    avg_rating = Reviews.objects.filter(restaurant__name=id).aggregate(Avg('rating'))
+    rating = avg_rating['rating__avg']
+    if isinstance(rating, float):
+        rating = int(rating)
+    else:
+        rating = rating
+    print(rating)
+    context = {'menu' : menu,'restaurant': info, 'featured' : featured, 'categories' : categories, 'rating' : rating}
     return render(request, "restaurant.html", context)
 
 @login_required

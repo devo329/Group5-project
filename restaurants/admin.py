@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from restaurants.models import Restaurant, Owner, Menu, FoodItem, Reviews #,Ratings
+from restaurants.models import Restaurant, Owner, Menu, FoodItem, Reviews#,Ratings
 
 # Register your models here.
 admin.site.register(Restaurant)

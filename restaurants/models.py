@@ -1,4 +1,3 @@
-from statistics import mode
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -17,8 +16,8 @@ class FoodItem(models.Model):
     name = models.CharField(max_length=60)
     doordash_price = models.DecimalField(max_digits = 5, decimal_places=2, default=0.0)
     uber_price = models.DecimalField(max_digits = 5, decimal_places=2, default=0.0)
-    type = models.CharField(max_length=30, default='')
     image_name = models.CharField(max_length=30,default='')
+    type = models.CharField(max_length=30)
     likes = models.IntegerField(default=0)
     likers = models.ManyToManyField(User, related_name='likers', blank=True)
 
@@ -36,7 +35,6 @@ class Restaurant(models.Model):
     doordash_delivery_time = models.CharField(max_length=10, default='0 Mins')
     image_name = models.CharField(max_length=30,default='')
     banner_name = models.CharField(max_length=30,default='')
-
 
     def __str__(self) -> str:
         return self.name
