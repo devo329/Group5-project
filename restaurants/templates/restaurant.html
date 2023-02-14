@@ -28,7 +28,7 @@
   <!--Bootstrap JS-->
 
   <!--Navbar-->
-  
+
   <nav class="navbar navbar-light" style="background-color: rgb(232, 218, 68);">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'index' %}">
@@ -37,7 +37,8 @@
       </a>
 
       <form class="form-inline">
-        <a class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" href="{% url 'index' %}" role="button">&#x2190; Go Back</a>
+        <a class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" href="{% url 'index' %}"
+          role="button">&#x2190; Go Back</a>
       </form>
 
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -336,13 +337,14 @@
           <div class="card-body">
             {% for c in distributions %}
             <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
-              <div style="width: 100px; text-align: right; margin-right: 10px;">{{c.rating}} <i style="color: gold" class="fa fa-star"></i></div>
+              <div style="width: 100px; text-align: right; margin-right: 10px;">{{c.rating}} <i style="color: gold"
+                  class="fa fa-star"></i></div>
               <div class="progress" style="width: 50%; flex-grow: 1;">
-                  <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ c.distribution }}"
-                      aria-valuemin="0" aria-valuemax="100" style="width: {{ c.distribution }}%;">
-                  </div>
+                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ c.distribution }}"
+                  aria-valuemin="0" aria-valuemax="100" style="width: {{ c.distribution }}%;">
+                </div>
               </div>
-          </div>
+            </div>
             <br>
             {% endfor %}
             <h5 class="card-title">
@@ -380,8 +382,14 @@
               <i style="color: gold" class="fa fa-star"></i>
               {% endif %}
             </h5>
-            <p class="card-text">This restaurant has an average rating of {{rating}}.0</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            {%if rating is None%}
+              <p class="card-text">This restaurant has not yet been rated</p>
+            {% else %}
+              <p class="card-text">This restaurant has an average rating of {{rating}}.0</p>
+            {%endif%}
+            <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
+              data-bs-dismiss="modal" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Write a
+              Review</button>
           </div>
         </div>
 
@@ -437,14 +445,11 @@
         {% endfor %}
 
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-dismiss="modal" data-bs-target="#exampleModalToggle2"
-          data-bs-toggle="modal">Open second modal</button>
-      </div>
     </div>
   </div>
 </div>
 
+<!-- FORM -->
 <div class="modal fade" id="exampleModalToggle2" aria-labelledby="exampleModalToggleLabel2" tabindex="-1"
   style="display: none;" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -454,16 +459,68 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Hide this modal and show the first with the button below.
+
+        {% block content %}
+        <form method="post" action="{% url 'review_submit' %}">
+          {% csrf_token %}
+          <!-- Restaurant -->
+          <div class="form-group">
+            <label for="restaurant" class="col-sm-2 col-form-label">Restaurant:</label>
+            <div class="col-sm-10">
+              <input type="text" name = "restaurant" readonly class="form-control-plaintext" id="restaurant" value="{{name}}">
+            </div>
+          </div>
+
+          <!-- Username -->
+          <div class="form-group">
+            <label for="username" class="col-sm-2 col-form-label">Username:</label>
+            <div class="col-sm-10">
+              <input type="text" name = "reviewer" readonly class="form-control-plaintext" id="username" value="{{ user.username }}">
+            </div>
+          </div>
+          <!-- Rating 1-5 -->
+          <div class="form-group">
+            <label for="rating" class="col-sm-2 col-form-label">Rating:</label>
+            <br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
+              <label class="form-check-label" for="inlineRadio1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+              <label class="form-check-label" for="inlineRadio2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+              <label class="form-check-label" for="inlineRadio3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
+              <label class="form-check-label" for="inlineRadio4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+              <label class="form-check-label" for="inlineRadio5">5</label>
+            </div>
+          </div>
+          <br>
+
+          <!-- Review -->
+          <div class="form-group">
+            <label for="review">Review:</label>
+            <textarea class="form-control" id="review" name="review" rows="3"></textarea>
+          </div>
+          <br>
+          <button type="submit" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">Submit</button>
+        </form>
+        {% endblock %}
+
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal" data-bs-target="#exampleModalToggle"
-          data-bs-toggle="modal">Back to first</button>
+        <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" data-dismiss="modal" data-bs-target="#exampleModalToggle"
+          data-bs-toggle="modal">&#x2190; Go Back</button>
       </div>
     </div>
   </div>
 </div>
-<button class="btn btn-primary" data-dismiss="modal" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Open
-  first modal</button>
-
 </html>

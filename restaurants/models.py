@@ -54,7 +54,7 @@ class Reviews(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE,related_name='reviews')
     rating = models.PositiveSmallIntegerField(validators=[validate_rating])
-    review = models.TextField(default='')
+    review = models.TextField(default='',blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
