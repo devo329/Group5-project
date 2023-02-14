@@ -17,11 +17,11 @@ def getAndFormatCategories(restaurant):
     for item in categories:
         category_list.append(item)
 
-    if category_list.__contains__('Dessert'):
-        category_list.append(category_list.pop(category_list.index('Dessert')))
+    if category_list.__contains__('Desserts'):
+        category_list.append(category_list.pop(category_list.index('Desserts')))
 
-    if category_list.__contains__('Drink'):
-      category_list.append(category_list.pop(category_list.index('Drink')))
+    if category_list.__contains__('Drinks'):
+      category_list.append(category_list.pop(category_list.index('Drinks')))
 
     return category_list
 
