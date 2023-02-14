@@ -47,7 +47,6 @@ def restaurant(request):
         rating = int(rating)
     else:
         rating = rating
-    print(rating)
     context = {'menu' : menu,'restaurant': info, 'featured' : featured, 'categories' : categories, 'rating' : rating}
     return render(request, "restaurant.html", context)
 
