@@ -328,9 +328,7 @@
             <br>
             {% endfor %}
             <h5 class="card-title">
-
               <h5 class="card-title">
-
                 {%if rating is None%}
                 No Reviews
                 {% elif rating is 1%}
@@ -370,9 +368,11 @@
               {% else %}
               <p class="card-text">This restaurant has an average rating of {{rating}}.0</p>
               {%endif%}
+              {% if user.is_authenticated %}
               <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
                 data-bs-dismiss="modal" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Write a
                 Review</button>
+              {%endif%}
           </div>
         </div>
 
