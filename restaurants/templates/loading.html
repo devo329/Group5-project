@@ -4,7 +4,6 @@ body {
   background-color: rgb(0, 0, 0);
 }
 
-
 #loading-wrapper {
   position: fixed;
   width: 100%;
@@ -148,7 +147,7 @@ body {
 
 <script>
     function redirect() {
-    window.location.replace("{% url 'restaurants' %}?{{ request.GET.urlencode }}");
+    window.location.replace("{% url 'restaurant' %}?{{ request.GET.urlencode }}");
     }
     setTimeout(redirect, 3000); // 3 seconds
   </script>
