@@ -11,11 +11,6 @@ from django.template import Library
 register = Library()
 
 # Create your views here.
-
-@register.filter
-def get_range( value ):
-  return range( value )
-
 def getRatings(restaurants):
     restaurant_rating_data = []
     for restaurant in restaurants:
