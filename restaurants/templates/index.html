@@ -68,9 +68,9 @@
     <h3 style="text-align: center; padding-bottom:10px;">Restaurants</h3>
     {% for data in restaurant_rating_data %}
     <div class="col-sm-4" style="padding-bottom: 20px;">
-      <div class="card " style="">
+      <div class="card">
         <img src="/static/restaurant/{{data.restaurant.image_name}}"
-        style="height: 200px; object-fit: cover; border-bottom" class="card-img-top " alt="...">
+        style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
         <div class="card-body">
           <h5 class="card-title">{{data.restaurant.name}}</h5>
           <!-- <p class="card-text"> Average Rating: {{ data.avg_rating }}</p> -->
