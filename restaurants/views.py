@@ -1,15 +1,9 @@
-from unicodedata import category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import *
-from django.db.models import Avg
+from django.db.models import Avg,Count,Sum
 
-import restaurants
-
-from django.template import Library
-
-register = Library()
 
 def getAndFormatCategories(restaurant):
     categories = FoodItem.objects.filter(menu__restaurant__name = restaurant).distinct().values_list('type', flat=True).order_by('type')
@@ -39,6 +33,48 @@ def getRatings(restaurants):
 
     return restaurant_rating_data
 
+def getRating(id):
+    avg_rating = Reviews.objects.filter(restaurant__name=id).aggregate(Avg('rating'))
+    rating = avg_rating['rating__avg']
+    if isinstance(rating, float):
+        rating = int(rating)
+    else:
+        rating = rating
+
+    return rating
+
+def getReviews(id):
+    reviews =  Reviews.objects.filter(restaurant__name = id).all()
+    reviews_count = Reviews.objects.filter(restaurant__name = id).values('rating').annotate(c=Count('rating')).order_by('rating')
+
+    toReturn = []
+    for r in reviews_count:
+        toReturn.append({r['rating'] : r['c']})
+
+    num_reviews = len(reviews)
+    expected_keys = {1, 2, 3, 4, 5}
+    present_keys = set()
+    for item in toReturn:
+        present_keys.update(item.keys())
+
+    missing_keys = expected_keys - present_keys
+
+    for i in missing_keys:
+        toReturn.append({i:0})
+
+    sorted_list = sorted(toReturn, key=lambda x: list(x.keys())[0])
+
+    key_values = [d.values() for d in sorted_list]
+
+    flat_list = [value for values in key_values for value in values]
+
+    distributed_list = []
+
+    for i in range(0,5):
+        distributed_list.append({'rating' : i + 1, 'distribution' : int((flat_list[i]/num_reviews)*100)})
+
+    return(num_reviews,reviews,sorted_list,distributed_list)
+
 def loading_screen(request):
     return render(request, 'loading.html')
 
@@ -53,16 +89,20 @@ def restaurant(request):
     menu = FoodItem.objects.filter(menu__restaurant__name = id)
     featured = FoodItem.objects.filter(menu__restaurant__name = id).order_by('-likes')[:3]
     info = Restaurant.objects.filter(name = id)
-    avg_rating = Reviews.objects.filter(restaurant__name=id).aggregate(Avg('rating'))
-    rating = avg_rating['rating__avg']
-    if isinstance(rating, float):
-        rating = int(rating)
-    else:
-        rating = rating
+    rating = getRating(id)
+    num_reviews,reviews,count,distributed_list = getReviews(id)
 
-    category_list = getAndFormatCategories(id)
-    print(category_list)
-    context = {'menu' : menu,'restaurant': info, 'featured' : featured, 'categories' : category_list, 'rating' : rating}
+    categories = getAndFormatCategories(id)
+    context = { 'menu' : menu,
+                'restaurant': info,
+                'featured' : featured,
+                'categories' : categories,
+                'rating' : rating,
+                'reviews' : reviews,
+                'num' : num_reviews,
+                'count' : count,
+                'distributions' : distributed_list
+                }
     return render(request, "restaurant.html", context)
 
 @login_required
