@@ -28,6 +28,7 @@
   <!--Bootstrap JS-->
 
   <!--Navbar-->
+  
   <nav class="navbar navbar-light" style="background-color: rgb(232, 218, 68);">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'index' %}">
@@ -35,21 +36,25 @@
         <img src="/static/logo.png" alt="" width="60" height="48" class="d-inline-block align-text-top">
       </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <form class="form-inline">
+        <a class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" href="{% url 'index' %}" role="button">&#x2190; Go Back</a>
+      </form>
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
           </li>
+          {% for data in restaurant_rating_data %}
+          <li class="nav-item">
+            <a class="nav-link" href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
+          </li>
+          {% endfor %}
         </ul>
       </div>
     </div>
-    </div>
   </nav>
+
   <!--Navbar-->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
