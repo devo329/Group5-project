@@ -51,8 +51,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
-
-
 </head>
 
 <body style="font-family: 'Rubik', sans-serif;">
@@ -81,6 +79,7 @@
     </div>
 
     <!-- Delivery Times -->
+    <!-- Uber Delivery Time -->
     <div class="row" style="padding: 50px;">
       <div class="col-sm-6" style="padding-bottom: 20px;">
         <div class="card">
@@ -96,6 +95,7 @@
         </div>
       </div>
 
+      <!-- DoorDash Delivery Time -->
       <div class="col-sm-6" style="padding-bottom: 20px;">
         <div class="card">
           <div class="card-body">
@@ -112,10 +112,10 @@
     </div>
 
     <!-- Other Info -->
-
     <div class="card-footer text-muted">
       <h3 style="color: black;">Information:</h3>
       <hr>
+      <!-- Price Range -->
       <div class="row" style="padding: 25px;">
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
@@ -126,6 +126,7 @@
           </div>
         </div>
 
+        <!-- Cuisine -->
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
@@ -135,6 +136,7 @@
           </div>
         </div>
 
+        <!-- Phone Number -->
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
@@ -144,44 +146,47 @@
           </div>
         </div>
 
+        <!-- Ratings -->
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title" style="color:black">Ratings:</h5>
+              <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <h5 style = "color: black; text-decoration: underline;" class="card-title hover-underline-animation">Ratings:</h5>
+              </a>
               <h5 style="color:black" class="card-text">
-              {%if rating is None%}
+                {%if rating is None%}
                 No Reviews
-              {% elif rating is 1%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif rating is 2%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif rating is 3%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif rating is 4%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif rating is 5%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              {% endif %}
+                {% elif rating is 1%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif rating is 2%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif rating is 3%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif rating is 4%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif rating is 5%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                {% endif %}
               </h5>
             </div>
           </div>
@@ -190,16 +195,42 @@
     </div>
   </div>
   {% endfor %}
+
   <!-- Banner Info -->
+  <style>
+    .hover-underline-animation {
+      display: inline-block;
+      position: relative;
+      color: #0087ca;
+    }
+
+    .hover-underline-animation::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      transform: scaleX(0);
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #0087ca;
+      transform-origin: bottom right;
+      transition: transform 0.25s ease-out;
+    }
+
+    .hover-underline-animation:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+  </style>
   <!-- Restaurant Info -->
 
-
   <!--Cards-->
+  <!-- Menu -->
   <div class="row" style="padding: 50px; font-family: 'Rubik', sans-serif;">
     <h1>Menu</h2>
       <hr>
       <br>
-
+      <!-- Featured -->
       <h2>Featured:</h2>
       <hr>
       {% for item in featured %}
@@ -221,56 +252,98 @@
         </div>
       </div>
       {% endfor %}
+      <!-- Featured -->
 
+      <!-- All Items -->
       <h2>All Items:</h2>
       <hr>
       {% for category in categories%}
-      <h2>{{category}}</h2>
-      <hr>
-        {% for item in menu %}
-        {%if item.type in category%}
-        <div class="col-sm-4" style="padding-bottom: 20px;">
-          <div class="card">
-            <img src="/static/fooditem/{{item.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top"
-              alt="...">
+        <h2>{{category}}</h2>
+        <hr>
+      {% for item in menu %}
+      {%if item.type in category%}
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="/static/fooditem/{{item.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top"
+            alt="...">
 
-            <div class="card-body">
-              <h5 class="card-title">{{item.name}}</h5>
-              {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
-                {{item.doordash_price}}</p>
-                <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-                {% else %}
-                <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
-                <p style="color:red;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-                {% endif %}
-            </div>
+          <div class="card-body">
+            <h5 class="card-title">{{item.name}}</h5>
+            {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
+              {{item.doordash_price}}</p>
+              <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
+              {% else %}
+              <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
+              <p style="color:red;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
+              {% endif %}
+          </div>
 
-            <div class="card-footer d-flex align-items-end justify-content-end">
-              {% for restaurant in restaurant %}
-              <form action="{% url 'like' item.id restaurant.name %}" method="post">
-                {% csrf_token %}
-                {% if user in item.likers.all %}
-                <button class="button button-like liked">
-                  <i class="fa fa-heart"></i>
-                  <span>Likes: {{ item.likes }} </span>
-                </button>
-                {% else %}
-                <button class="button button-like">
-                  <i class="fa fa-heart"></i>
-                  <span>Likes: {{ item.likes }} </span>
-                </button>
-                {% endif %}
-                {% endfor %}
-              </form>
-            </div>
-
+          <!-- Like Button -->
+          <div class="card-footer d-flex align-items-end justify-content-end">
+            {% for restaurant in restaurant %}
+            <form action="{% url 'like' item.id restaurant.name %}" method="post">
+              {% csrf_token %}
+              {% if user in item.likers.all %}
+              <button class="button button-like liked">
+                <i class="fa fa-heart"></i>
+                <span>Likes: {{ item.likes }} </span>
+              </button>
+              {% else %}
+              <button class="button button-like">
+                <i class="fa fa-heart"></i>
+                <span>Likes: {{ item.likes }} </span>
+              </button>
+              {% endif %}
+              {% endfor %}
+               <!-- Like Button -->
+            </form>
           </div>
         </div>
-        {%endif%}
-        {% endfor %}
+      </div>
+      {% else %}
+      {%endif%}
+      {% endfor %}
       {% endfor %}
   </div>
   <!--Cards-->
+
+  <!-- Button trigger modal -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="col-sm-12" style="padding-bottom: 20px;">
+            <div class="card">
+              <img src="/static/fooditem/{{item.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top"
+                alt="...">
+
+              <div class="card-body">
+                <h5 class="card-title">{{item.name}}</h5>
+                {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
+                  {{item.doordash_price}}</p>
+                  <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
+                  {% else %}
+                  <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
+                  <p style="color:red;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
+                  {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 

@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -9,6 +10,20 @@ import restaurants
 from django.template import Library
 
 register = Library()
+
+def getAndFormatCategories(restaurant):
+    categories = FoodItem.objects.filter(menu__restaurant__name = restaurant).distinct().values_list('type', flat=True).order_by('type')
+    category_list = []
+    for item in categories:
+        category_list.append(item)
+
+    if category_list.__contains__('Dessert'):
+        category_list.append(category_list.pop(category_list.index('Dessert')))
+
+    if category_list.__contains__('Drink'):
+      category_list.append(category_list.pop(category_list.index('Drink')))
+
+    return category_list
 
 # Create your views here.
 def getRatings(restaurants):
@@ -36,7 +51,6 @@ def index(request):
 def restaurant(request):
     id = request.GET.get('id')
     menu = FoodItem.objects.filter(menu__restaurant__name = id)
-    categories = FoodItem.objects.filter(menu__restaurant__name = id).values_list('type', flat=True).distinct().order_by('-name')
     featured = FoodItem.objects.filter(menu__restaurant__name = id).order_by('-likes')[:3]
     info = Restaurant.objects.filter(name = id)
     avg_rating = Reviews.objects.filter(restaurant__name=id).aggregate(Avg('rating'))
@@ -45,8 +59,10 @@ def restaurant(request):
         rating = int(rating)
     else:
         rating = rating
-    print(rating)
-    context = {'menu' : menu,'restaurant': info, 'featured' : featured, 'categories' : categories, 'rating' : rating}
+
+    category_list = getAndFormatCategories(id)
+    print(category_list)
+    context = {'menu' : menu,'restaurant': info, 'featured' : featured, 'categories' : category_list, 'rating' : rating}
     return render(request, "restaurant.html", context)
 
 @login_required
