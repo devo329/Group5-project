@@ -52,24 +52,25 @@
     <!--Bootstrap JS-->
 
 <div style="padding-left:10px;">
-{% block content %}
-<br>
-<div class="card" style="width: 18rem; margin: 0 auto; float: none; margin-bottom: 10px;">
-    <div class="card-body">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-outline-danger">Login</button>
-              </form>
-            {% endblock %}
-    </div>
-  </div>
-  <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p>
+  {% block content %} 
 
+  {% load crispy_forms_tags %}         
+  
+  <!--Register--> 
+  <div class="container py-5">
+    <h1>Register</h1>
+    <form method="POST">
+      {% csrf_token %}
+      {{ register_form|crispy }}                    
+      <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <p class="text-center">If you already have an account, <a href="accounts/login">login</a> instead.</p>
+  </div>
+  
+  {% endblock %}
+  </div>
 </div>
 
 </body>
 
 </html>
-
-

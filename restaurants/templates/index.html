@@ -35,6 +35,23 @@
             <a class="nav-link" href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
           </li>
           {% endfor %}
+
+          {% if user.is_authenticated %}
+      
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Welcome, {{user.username}}</a>
+          </li>
+
+          {% else %}
+
+          <li class="nav-item">
+            <a class="nav-link" href="accounts/login">Login</a>
+          </li>
+
+          {% endif %}
           
         </ul>
       </div>

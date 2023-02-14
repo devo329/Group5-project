@@ -1,11 +1,14 @@
 from django.shortcuts import render
-from .forms import ReviewForm
+from .forms import NewUserForm, ReviewForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import *
 from django.db.models import Avg, Count, Sum
-from .forms import ReviewForm
+from .forms import NewUserForm
+from django.contrib import messages
+from django.contrib.auth import login, logout
+
 
 
 def getAndFormatCategories(restaurant):
@@ -167,3 +170,21 @@ def addReview(request):
         form = ReviewForm()
 
     return redirect(reverse('restaurant') + "?id=McDonalds")
+
+def register_request(request):
+	if request.method == "POST":
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Registration successful." )
+			return redirect("index")
+		messages.error(request, "Unsuccessful registration. Invalid information.")
+	form = NewUserForm()
+	return render (request=request, template_name="register.html", context={"register_form":form})
+
+
+def logout_request(request):
+	logout(request)
+	messages.info(request, "You have successfully logged out.") 
+	return redirect("index")
