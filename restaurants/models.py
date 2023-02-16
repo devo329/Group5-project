@@ -35,6 +35,9 @@ class Restaurant(models.Model):
     doordash_delivery_time = models.CharField(max_length=10, default='0 Mins')
     image_name = models.CharField(max_length=30,default='')
     banner_name = models.CharField(max_length=30,default='')
+    uberlink = models.CharField(max_length=120, default='')
+    doordashlink = models.CharField(max_length=120, default='')
+
 
     def __str__(self) -> str:
         return self.name
