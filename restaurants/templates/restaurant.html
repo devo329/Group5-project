@@ -88,8 +88,8 @@
       <div class="col-sm-6" style="padding-bottom: 20px;">
         <div class="card">
           <div class="card-body">
-            {% if restaurant.uber_delivery_time < restaurant.doordash_delivery_time %} <h5 style="color: green;"
-              class="card-title">Uber Delivery Time:</h5>
+            {% if restaurant.doordash_delivery_time > restaurant.uber_delivery_time %}
+              <h5 style="color: green;" class="card-title">Uber Delivery Time:</h5>
               <h5 style="color: green;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
               {% else %}
               <h5 style="color: red;" class="card-title">Uber Delivery Time:</h5>
@@ -102,7 +102,7 @@
       <div class="col-sm-6" style="padding-bottom: 20px;">
         <div class="card">
           <div class="card-body">
-            {% if restaurant.uber_delivery_time > restaurant.doordash_delivery_time %}
+            {% if restaurant.uber_delivery_time  > restaurant.doordash_delivery_time %}
             <h5 style="color: green;" class="card-title">DoorDash Delivery Time:</h5>
             <h5 style="color: green;" class="card-text"><u>{{restaurant.doordash_delivery_time}}</u></h5>
             {% else %}
