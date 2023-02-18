@@ -197,28 +197,32 @@
   <!-- Banner Info -->
   <!-- Restaurant Info -->
 
-  <div class="accordion" id="accordionPanelsStayOpenExample">
-    {% for category in categories%}
-    <div class="accordion-item">
-      <!-- Heading -->
-      <h2 class="accordion-header" id="panelsStayOpen-heading-{{category}}">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-          data-bs-target="#panelsStayOpen-collapse-{{category}}" aria-expanded="true"
-          aria-controls="panelsStayOpen-collapse-{{catgeory}}">
-          {{category}}
-        </button>
-      </h2>
 
-      <!-- Content  -->
-      <div id="panelsStayOpen-collapse-{{category}}" class="accordion-collapse collapse show"
-        aria-labelledby="panelsStayOpen-heading-{{category}}">
-        <div class="accordion-body">
-          {% for item in menu %}
-          {%if item.type in category%}
-          <div class="col-sm-4" style="padding-bottom: 20px;">
-            <div class="card">
-              <img src="/static/fooditem/{{item.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top"
-                alt="...">
+  <!-- Accordian -->
+  <div class="row" style="padding: 50px; font-family: 'Rubik', sans-serif;">
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+      {% for category in categories%}
+      <h2>{{category}}</h2>
+      <div class="accordion-item">
+        <!-- Heading -->
+        <h2 style="font-size: 50px !important;" class="accordion-header" id="panelsStayOpen-heading-{{category}}">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapse-{{category}}" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapse-{{category}}">
+
+          </button>
+        </h2>
+
+        <!-- Content  -->
+        <div id="panelsStayOpen-collapse-{{category}}" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-heading-{{category}}">
+          <div class="accordion-body" style="display: flex; flex-wrap: wrap;">
+            {% for item in menu %}
+            {%if item.type in category%}
+            <div class="card" style="width: 30%; margin-right: 20px; margin-bottom: 20px; display: inline-block;">
+              <img src="/static/fooditem/{{item.image_name}}" style="height: 300px; object-fit: cover;"
+                class="card-img-top" alt="...">
+
               <div class="card-body">
                 <h5 class="card-title">{{item.name}}</h5>
                 {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
@@ -240,6 +244,15 @@
       </div>
     </div>
     {%endfor%}
+  </div>
+            {%endif%}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <br>
+      {%endfor%}
+    </div>
   </div>
 
   <!--Cards-->
