@@ -66,6 +66,22 @@ def like(request, item_id, restaurant_id):
 
     return redirect(reverse('restaurant') + "?id=" + restaurant_id)
 
+@login_required
+def favorite(request,restaurant_id):
+    restaurant = Restaurant.objects.get(name = restaurant_id)
+
+    if request.user not in restaurant.favoriters.all():
+        restaurant.favorites += 1
+        restaurant.favoriters.add(request.user)
+        restaurant.save()
+
+    elif request.user in restaurant.favoriters.all():
+        restaurant.favorites -= 1
+        restaurant.favoriters.remove(request.user)
+        restaurant.save()
+
+    return redirect(reverse('restaurant') + "?id=" + restaurant_id)
+
 def error(request):
     return render(request, 'error.html')
 

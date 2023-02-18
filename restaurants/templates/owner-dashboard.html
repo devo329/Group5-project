@@ -107,7 +107,7 @@
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title" style="color:black">Phone Number:</h5>
+              <h5 class="card-title" style="color:black">Favorited:</h5>
               <h5 class="card-text" style="color:black">{{restaurant.phone}}</h5>
             </div>
           </div>
@@ -161,128 +161,6 @@
       </div>
     </div>
   </div>
-
-  {% for restaurant in restaurant %}
-  <div class="card text-center">
-    <!-- Name + Banner -->
-    <div class="container-md" style="padding: 20px; ">
-      <h3 class="card-title">{{restaurant.name}}</h3>
-      <img src="/static/banners/{{restaurant.banner_name}}"
-        style="width: 100%; height:200px; border-radius:55px; object-fit: cover;" class="card-img-top" alt="...">
-    </div>
-    <!-- Delivery Times -->
-    <!-- Uber Delivery Time -->
-    <div class="row" style="padding: 50px;">
-      <div class="col-sm-6" style="padding-bottom: 20px;">
-        <div class="card">
-          <div class="card-body">
-            {% if restaurant.uber_delivery_time < restaurant.doordash_delivery_time %} <h5 style="color: green;"
-              class="card-title">Uber Delivery Time:</h5>
-              <h5 style="color: green;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
-              {% else %}
-              <h5 style="color: red;" class="card-title">Uber Delivery Time:</h5>
-              <h5 style="color: red;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
-              {% endif %}
-          </div>
-        </div>
-      </div>
-      <!-- DoorDash Delivery Time -->
-      <div class="col-sm-6" style="padding-bottom: 20px;">
-        <div class="card">
-          <div class="card-body">
-            {% if restaurant.uber_delivery_time > restaurant.doordash_delivery_time %}
-            <h5 style="color: green;" class="card-title">DoorDash Delivery Time:</h5>
-            <h5 style="color: green;" class="card-text"><u>{{restaurant.doordash_delivery_time}}</u></h5>
-            {% else %}
-            <h5 style="color: red;" class="card-title">DoorDash Delivery Time:</h5>
-            <h5 style="color: red;" class="card-text"><u>{{restaurant.doordash_delivery_time}}</u></h5>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Other Info -->
-    <div class="card-footer text-muted">
-      <h3 style="color: black;">Information:</h3>
-      <hr>
-      <!-- Price Range -->
-      <div class="row" style="padding: 25px;">
-        <div class="col-sm-3" style="padding-bottom: 10px;">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title" style="color:black">Price Range</h5>
-              <h5 class="card-text" style="color:black">{{restaurant.price_range}}</h5>
-            </div>
-          </div>
-        </div>
-        <!-- Cuisine -->
-        <div class="col-sm-3" style="padding-bottom: 10px;">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title" style="color:black">Cuisine:</h5>
-              <h5 class="card-text" style="color:black">{{restaurant.cuisine}}</h5>
-            </div>
-          </div>
-        </div>
-        <!-- Phone Number -->
-        <div class="col-sm-3" style="padding-bottom: 10px;">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title" style="color:black">Phone Number:</h5>
-              <h5 class="card-text" style="color:black">{{restaurant.phone}}</h5>
-            </div>
-          </div>
-        </div>
-        <!-- Ratings -->
-        <div class="col-sm-3" style="padding-bottom: 10px;">
-          <div class="card">
-            <div class="card-body">
-              <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-                <h5 style="color: black; text-decoration: underline;" class="card-title hover-underline-animation">
-                  Ratings:</h5>
-              </a>
-              <h5 style="color:black" class="card-text">
-                {%if rating is None%}
-                No Reviews
-                {% elif rating is 1%}
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                {% elif rating is 2%}
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                {% elif rating is 3%}
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                {% elif rating is 4%}
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: #999" class="fa fa-star"></i>
-                {% elif rating is 5%}
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                <i style="color: gold" class="fa fa-star"></i>
-                {% endif %}
-              </h5>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
 
   <!-- Banner Info -->
   <style>
