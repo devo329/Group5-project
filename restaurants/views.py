@@ -18,10 +18,6 @@ def index(request):
     restaurants = Restaurant.objects.all()
     restaurant_rating_data = getRatings(restaurants)
     owners = Owner.objects.all()
-    owners_list = []
-    for owner in owners:
-        owners_list.append(owner.user)
-
     context = {'restaurant_rating_data': restaurant_rating_data, 'owners' : owners}
     return render(request, "index.html", context)
 
