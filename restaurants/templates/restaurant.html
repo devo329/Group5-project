@@ -3,57 +3,31 @@
 <html lang="en">
 
 <head>
-  <!--Bootstrap CSS-->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
   <!--Bootstrap CSS-->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="../static/styles/likes.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+
   <!--Bootstrap JS-->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-    crossorigin="anonymous"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <!--Bootstrap JS-->
 
   <!--Navbar-->
-
   <nav class="navbar navbar-light" style="background-color: rgb(232, 218, 68);">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'index' %}">
-
         <!-- logo -->
         <img src="/static/logo.png" alt="" width="60" height="48" class="d-inline-block align-text-top">
       </a>
-
       <form class="form-inline">
         <a class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" href="{% url 'index' %}"
           role="button">&#x2190; Go Back</a>
       </form>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <h5 class="card-header">Overview</h5>
-
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-          </li>
-          {% for data in restaurant_rating_data %}
-          <li class="nav-item">
-            <a class="nav-link" href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
   </nav>
+
   <!--Navbar-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,14 +35,28 @@
 </head>
 
 <body style="font-family: 'Rubik', sans-serif;">
-  <!--Bootstrap JS-->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-    crossorigin="anonymous"></script>
-  <!--Bootstrap JS-->
+
+
+  <!-- Favorite Button -->
+{% for restaurant in restaurant %}
+<div class="fixed-bottom">
+  <form action="{% url 'favorite' name %}" method="post">
+    {% csrf_token %}
+    {% if user in restaurant.favoriters.all %}
+    <button class="button button-favorite favorited">
+      <i class="fa fa-heart"></i>
+      <span>Favorited</span>
+    </button>
+    {% else %}
+    <button class="button button-favorite">
+      <i class="fa fa-heart"></i>
+      <span>Favorite</span>
+    </button>
+    {%endif%}
+  </form>
+</div>
+{% endfor %}
+
   <!-- Name + Banner -->
   {% for restaurant in restaurant %}
   <div class="card text-center">
@@ -88,17 +76,17 @@
       <div class="col-sm-6" style="padding-bottom: 20px;">
         <div class="card">
           <div class="card-body">
-            {% if restaurant.uber_delivery_time < restaurant.doordash_delivery_time %} <h5 style="color: green;"
-              class="card-title">Uber Delivery Time:</h5>
-              <h5 style="color: green;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
-              {% else %}
-              <h5 style="color: red;" class="card-title">Uber Delivery Time:</h5>
-              <h5 style="color: red;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
-              {% endif %}
+            {% if restaurant.doordash_delivery_time > restaurant.uber_delivery_time %}
+            <h5 style="color: green;" class="card-title">Uber Delivery Time:</h5>
+            <h5 style="color: green;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
+            {% else %}
+            <h5 style="color: red;" class="card-title">Uber Delivery Time:</h5>
+            <h5 style="color: red;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
+            {% endif %}
           </div>
           <form action="{{restaurant.uberlink}}" method="get" target="_blank">
             <button type="submit">Uber</button>
-         </form>
+          </form>
         </div>
       </div>
       <!-- DoorDash Delivery Time -->
@@ -115,7 +103,7 @@
           </div>
           <form action="{{restaurant.doordashlink}}" method="get" target="_blank">
             <button type="submit">DoorDash</button>
-         </form>
+          </form>
         </div>
       </div>
     </div>
@@ -201,33 +189,11 @@
     </div>
   </div>
   {% endfor %}
+
+
   <!-- Banner Info -->
-  <style>
-    .hover-underline-animation {
-      display: inline-block;
-      position: relative;
-      color: #0087ca;
-    }
-
-    .hover-underline-animation::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      transform: scaleX(0);
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: #0087ca;
-      transform-origin: bottom right;
-      transition: transform 0.25s ease-out;
-    }
-
-    .hover-underline-animation:hover::after {
-      transform: scaleX(1);
-      transform-origin: bottom left;
-    }
-  </style>
   <!-- Restaurant Info -->
+
   <!--Cards-->
   <!-- Menu -->
   <div class="row" style="padding: 50px; font-family: 'Rubik', sans-serif;">
@@ -256,6 +222,8 @@
       </div>
       {% endfor %}
       <!-- Featured -->
+
+
       <!-- All Items -->
       <h2>All Items:</h2>
       <hr>
@@ -446,73 +414,73 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Write Your Review</h1>
     <div class="modal-content">
-    <div class="modal-header">
-      <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Write Your Review</h1>
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      {% block content %}
-      <form method="post" action="{% url 'review_submit' %}">
-        {% csrf_token %}
-        <!-- Restaurant -->
-        <div class="form-group">
-          <label for="restaurant" class="col-sm-2 col-form-label">Restaurant:</label>
-          <div class="col-sm-10">
-            <input type="text" name="restaurant" readonly class="form-control-plaintext" id="restaurant"
-              value="{{name}}">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Write Your Review</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% block content %}
+        <form method="post" action="{% url 'review_submit' %}">
+          {% csrf_token %}
+          <!-- Restaurant -->
+          <div class="form-group">
+            <label for="restaurant" class="col-sm-2 col-form-label">Restaurant:</label>
+            <div class="col-sm-10">
+              <input type="text" name="restaurant" readonly class="form-control-plaintext" id="restaurant"
+                value="{{name}}">
+            </div>
           </div>
-        </div>
 
-        <!-- Username -->
-        <div class="form-group">
-          <label for="username" class="col-sm-2 col-form-label">Username:</label>
-          <div class="col-sm-10">
-            <input type="text" name="reviewer" readonly class="form-control-plaintext" id="username"
-              value="{{ user.username }}">
+          <!-- Username -->
+          <div class="form-group">
+            <label for="username" class="col-sm-2 col-form-label">Username:</label>
+            <div class="col-sm-10">
+              <input type="text" name="reviewer" readonly class="form-control-plaintext" id="username"
+                value="{{ user.username }}">
+            </div>
           </div>
-        </div>
-        <!-- Rating 1-5 -->
-        <div class="form-group">
-          <label for="rating" class="col-sm-2 col-form-label">Rating:</label>
+          <!-- Rating 1-5 -->
+          <div class="form-group">
+            <label for="rating" class="col-sm-2 col-form-label">Rating:</label>
+            <br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
+              <label class="form-check-label" for="inlineRadio1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
+              <label class="form-check-label" for="inlineRadio2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
+              <label class="form-check-label" for="inlineRadio3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
+              <label class="form-check-label" for="inlineRadio4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
+              <label class="form-check-label" for="inlineRadio5">5</label>
+            </div>
+          </div>
           <br>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="rating" id="inlineRadio1" value="1">
-            <label class="form-check-label" for="inlineRadio1">1</label>
+          <!-- Review -->
+          <div class="form-group">
+            <label for="review">Review:</label>
+            <textarea class="form-control" id="review" name="review" rows="3"></textarea>
           </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="rating" id="inlineRadio2" value="2">
-            <label class="form-check-label" for="inlineRadio2">2</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="rating" id="inlineRadio3" value="3">
-            <label class="form-check-label" for="inlineRadio3">3</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="rating" id="inlineRadio4" value="4">
-            <label class="form-check-label" for="inlineRadio4">4</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="rating" id="inlineRadio5" value="5">
-            <label class="form-check-label" for="inlineRadio5">5</label>
-          </div>
-        </div>
-        <br>
-        <!-- Review -->
-        <div class="form-group">
-          <label for="review">Review:</label>
-          <textarea class="form-control" id="review" name="review" rows="3"></textarea>
-        </div>
-        <br>
-        <button type="submit" class="btn btn-outline-danger"
-          style=" border-color: red; hover-color: white;">Submit</button>
-      </form>
-      {% endblock %}
+          <br>
+          <button type="submit" class="btn btn-outline-danger"
+            style=" border-color: red; hover-color: white;">Submit</button>
+        </form>
+        {% endblock %}
 
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" data-dismiss="modal"
-        data-bs-target="#exampleModalToggle" data-bs-toggle="modal">&#x2190; Go Back</button>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" data-dismiss="modal"
+          data-bs-target="#exampleModalToggle" data-bs-toggle="modal">&#x2190; Go Back</button>
+      </div>
     </div>
   </div>
-</div>
 </div>

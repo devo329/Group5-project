@@ -39,36 +39,36 @@
               </li>
           {% endfor %}
             </ul>
-          </li>      
-        </ul> 
-        
+          </li>
+        </ul>
+
         <ul class="navbar-nav mb-2 mb-lg-0">
           {% if user.is_authenticated %}
-          
+
               <li class="nav-item" style="padding-top: 8px;">
                 <a class="nav-link" href="#">Welcome, {{user.username}}</a>
               </li>
-      
+
               <li class="nav-item">
-                <a class="nav-link" href="/logout">            
+                <a class="nav-link" href="/logout">
                   <button type="submit" class="btn btn-outline-danger">Logout</button>
                 </a>
-              </li>      
-      
+              </li>
+
               {% else %}
-      
+
               <li class="nav-item">
                 <a class="nav-link" href="accounts/login">
                   <button type="submit" class="btn btn-outline-danger">Login</button>
                 </a>
               </li>
-      
+
               <li class="nav-item">
                 <a class="nav-link" href="/register">
                   <button type="submit" class="btn btn-outline-danger">Sign Up</button>
                 </a>
               </li>
-      
+
               {% endif %}
             </ul>
       </div>
@@ -77,7 +77,7 @@
 
 
 
-  
+
   <!--Navbar-->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">

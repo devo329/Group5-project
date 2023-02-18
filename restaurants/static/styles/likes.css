@@ -1,70 +1,167 @@
 .button-like {
-    border: 0.5px solid #8a8a8a;
-    background-color: transparent;
-    text-decoration: none;
-    padding: 5px 10px;
-    position: relative;
-    vertical-align: middle;
-    text-align: center;
-    display: inline-block;
-    border-radius: 3rem;
-    color: #8a8a8a;
-    transition: all ease 0.4s;
-  }
+border: 0.5px solid #8a8a8a;
+background-color: transparent;
+text-decoration: none;
+padding: 5px 10px;
+position: relative;
+vertical-align: middle;
+text-align: center;
+display: inline-block;
+border-radius: 3rem;
+color: #8a8a8a;
+transition: all ease 0.4s;
+}
 
-  .button-like span {
-    margin-left: 0.5rem;
-  }
+.button-like span {
+margin-left: 0.5rem;
+}
 
-  .button-like .fa,
-  .button-like span {
-    transition: all ease 0.4s;
-  }
+.button-like .fa,
+.button-like span {
+transition: all ease 0.4s;
+}
 
-  .button-like:focus {
-    background-color: transparent;
-  }
+.button-like:focus {
+background-color: transparent;
+}
 
-  .button-like:focus .fa,
-  .button-like:focus span {
-    color: #8a8a8a;
-  }
+.button-like:focus .fa,
+.button-like:focus span {
+color: #8a8a8a;
+}
 
-  .button-like:hover {
-    border-color: #cc4b37;
-    background-color: transparent;
-  }
+.button-like:hover {
+border-color: #cc4b37;
+background-color: transparent;
+}
 
-  .button-like:hover .fa,
-  .button-like:hover span {
-    color: #cc4b37;
-  }
+.button-like:hover .fa,
+.button-like:hover span {
+color: #cc4b37;
+}
 
-  .liked {
-    background-color: #cc4b37;
-    border-color: #cc4b37;
-  }
+.liked {
+background-color: #cc4b37;
+border-color: #cc4b37;
+}
 
-  .liked .fa,
-  .liked span {
-    color: #fefefe;
-  }
+.liked .fa,
+.liked span {
+color: #fefefe;
+}
 
-  .liked:focus {
-    background-color: #cc4b37;
-  }
+.liked:focus {
+background-color: #cc4b37;
+}
 
-  .liked:focus .fa,
-  .liked:focus span {
-    color: #fefefe;
-  }
+.liked:focus .fa,
+.liked:focus span {
+color: #fefefe;
+}
 
-  .liked:hover {
-    background-color: #cc4b37;
-    border-color: #cc4b37;
-  }
+.liked:hover {
+background-color: #cc4b37;
+border-color: #cc4b37;
+}
 
-  .liked:hover .fa,
-  .liked:hover span {
-    color: #fefefe;
-  }
+.liked:hover .fa,
+.liked:hover span {
+color: #fefefe;
+}
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: #0087ca;
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #0087ca;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.button-favorite {
+  border: 0.5px solid #8a8a8a;
+  background-color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  position: fixed;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 3rem;
+  color: #8a8a8a;
+  transition: all ease 0.4s;
+  bottom: 15px;
+  right: 10px;
+}
+
+.button-favorite span {
+  margin-left: 0.5rem;
+}
+
+.button-favorite .fa,
+.button-favorite span {
+  transition: all ease 0.4s;
+}
+
+.button-favorite:focus {
+  background-color: transparent;
+}
+
+.button-favorite:focus .fa,
+.button-favorite:focus span {
+  color: #8a8a8a;
+}
+
+.button-favorite:hover {
+  border-color: #cc4b37;
+  background-color: transparent;
+}
+
+.button-favorite:hover .fa,
+.button-favorite:hover span {
+  color: #cc4b37;
+}
+
+.favorited {
+  background-color: #cc4b37;
+  border-color: #cc4b37;
+}
+
+.favorited .fa,
+.favorited span {
+  color: #fefefe;
+}
+
+.favorited:focus {
+  background-color: #cc4b37;
+}
+
+.favorited:focus .fa,
+.favorited:focus span {
+  color: #fefefe;
+}
+
+.favorited:hover {
+  background-color: #cc4b37;
+  border-color: #cc4b37;
+}
+
+.favorited:hover .fa,
+.favorited:hover span {
+  color: #fefefe;
+}

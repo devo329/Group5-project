@@ -1,15 +1,16 @@
+
 from django import forms
-from .models import FoodItem, Reviews
+
+from Price_Comp.settings import BASE_DIR
+from .models import FoodItem, Restaurant, Reviews
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+import os
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Reviews
         fields = ['rating', 'review']
-        
-        
 
 class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
@@ -24,3 +25,41 @@ class NewUserForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+class RestaurantForm(forms.ModelForm):
+    class Meta:
+        model = Restaurant
+        fields = ['name', 'address', 'phone', 'cuisine', 'price_range', 'owner', 'uber_delivery_time', 'doordash_delivery_time', 'image_name', 'banner_name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'cuisine': forms.TextInput(attrs={'class': 'form-control'}),
+            'price_range': forms.TextInput(attrs={'class': 'form-control'}),
+            'owner': forms.Select(attrs={'class': 'form-control'}),
+            'uber_delivery_time': forms.TextInput(attrs={'class': 'form-control'}),
+            'doordash_delivery_time': forms.TextInput(attrs={'class': 'form-control'}),
+            'banner_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+    image_name = forms.FileField(required=False)
+    print(image_name)
+
+    def save(self, commit=True):
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'restaurants/static/restaurant')
+        restaurant = super(RestaurantForm, self).save(commit=False)
+
+        image_file = self.cleaned_data.get('image_name', None)
+        if image_file:
+            file_path = os.path.join(MEDIA_ROOT, image_file.name)
+            with open(file_path, 'wb') as destination:
+                for chunk in image_file.chunks():
+                    destination.write(chunk)
+            restaurant.image_name = image_file.name
+
+        if commit:
+            restaurant.save()
+        return restaurant
+
+

@@ -37,6 +37,8 @@ class Restaurant(models.Model):
     banner_name = models.CharField(max_length=30,default='')
     uberlink = models.CharField(max_length=120, default='')
     doordashlink = models.CharField(max_length=120, default='')
+    favorites = models.IntegerField(default=0)
+    favoriters = models.ManyToManyField(User, related_name='favoriters', blank=True)
 
 
     def __str__(self) -> str:
