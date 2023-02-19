@@ -8,7 +8,7 @@ from .forms import *
 from .functions import *
 from django.contrib import messages
 from django.contrib.auth import login, logout
-
+import re
 
 def loading_screen(request):
     return render(request, 'loading.html')
@@ -22,16 +22,32 @@ def index(request):
     return render(request, "index.html", context)
 
 
+def parse_mins(id):
+    info = Restaurant.objects.get(name=id)
+    uber_time = info.uber_delivery_time
+    doordash_time = info.doordash_delivery_time
+
+    match = re.search(r'^(\d+)', uber_time)
+    if match:
+        uber_time = int(match.group(1))
+
+    match = re.search(r'^(\d+)', doordash_time)
+    if match:
+        doordash_time = int(match.group(1))
+
+    return(uber_time,doordash_time)
+
 def restaurant(request):
     id = request.GET.get('id')
     menu = FoodItem.objects.filter(menu__restaurant__name=id)
     featured = FoodItem.objects.filter(
         menu__restaurant__name=id).order_by('-likes')[:3]
     info = Restaurant.objects.filter(name=id)
+    parse_mins(id)
     rating = getRating(id)
     num_reviews, reviews, count, distributed_list = getReviews(id)
     categories = getAndFormatCategories(id)
-
+    uber_time,doordash_time = parse_mins(id)
     context = {'menu': menu,
                'restaurant': info,
                'featured': featured,
@@ -42,6 +58,8 @@ def restaurant(request):
                'count': count,
                'distributions': distributed_list,
                'name': id,
+               'uber_time' : uber_time,
+               'doordash_time' : doordash_time
                }
     return render(request, "restaurant.html", context)
 
