@@ -49,6 +49,16 @@
                 <a class="nav-link" href="#">Welcome, {{user.username}}</a>
               </li>
 
+              {%for owner in owners%}
+              {% if user == owner.user %}
+              <li class="nav-item">
+                <a class="nav-link" href="/owner/dashboard?id={{owner.id}}">
+                  <button type="submit" class="btn btn-outline-danger">Owner Dashboard</button>
+                </a>
+              </li>
+              {%endif%}
+              {%endfor%}
+
               <li class="nav-item">
                 <a class="nav-link" href="/logout">
                   <button type="submit" class="btn btn-outline-danger">Logout</button>
