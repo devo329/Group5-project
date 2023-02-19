@@ -124,23 +124,46 @@ def logout_request(request):
 	messages.info(request, "You have successfully logged out.")
 	return redirect("index")
 
+def getMenu(id):
+    restaurant = Restaurant.objects.filter(owner_id= id)
+    list = []
+    for r in restaurant:
+        menu = FoodItem.objects.filter(menu__restaurant__name=r.name)
+        list.append({'name': r.name, 'menu': menu})
+    return list
+
 def create_restaurant(request):
     id = request.GET.get('id')
+    context = {}
     if request.method == 'POST':
-        form = RestaurantForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('index')
-    else:
-        form = RestaurantForm()
-        restaurant = Restaurant.objects.filter(owner_id= id)
-        owner_info = Owner.objects.filter(id= id)[0]
-        restaurants = Restaurant.objects.all()
-        restaurant_rating_data = getRatings(restaurants)
-        context = {
-            'form':form,
-            'owner_info': owner_info,
-            'restaurant_rating_data': restaurant_rating_data,
-        }
+        form_type = request.POST.get('form_type')
+        print(form_type)
+        if form_type == 'restaurant_form':
+            form = RestaurantForm(request.POST, request.FILES)
+            if form.is_valid():
+                restaurant = form.save(commit=False)
+                restaurant.owner = Owner.objects.filter(id= id)[:1].get()
+                restaurant.save()
+                return redirect('index')
 
+    form = RestaurantForm()
+    restaurant = Restaurant.objects.filter(owner_id= id)
+    owner_info = Owner.objects.filter(id= id)[0]
+    restaurants = Restaurant.objects.filter(owner__id=id).all()
+    restaurant_rating_data = getRatings(restaurants)
+    restaurants_owned = len(restaurants)
+    likes = getNumLikes(id)
+    favorites = getNumFavorited(id)
+    avg_rating = avgRatings(id)
+    menu = getMenu(id)
+    context = {
+        'menu' : menu,
+        'form':form,
+        'likes' : likes,
+        'favorites' : favorites,
+        'owner_info': owner_info,
+        'restaurant_rating_data': restaurant_rating_data,
+        'restaurants_owned' : restaurants_owned,
+        'rating' : avg_rating,
+    }
     return render(request, 'owner-dashboard.html', context)

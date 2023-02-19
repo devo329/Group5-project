@@ -85,3 +85,46 @@ def getReviews(id):
                 {'rating': i + 1, 'distribution': int((flat_list[i]/num_reviews)*100)})
 
     return (num_reviews, reviews, sorted_list, distributed_list)
+
+def getNumLikes(id):
+    menus = Menu.objects.filter(restaurant__owner = id)
+    food_items_list = []
+    for m in menus:
+        food_items_list = FoodItem.objects.filter(menu = m)
+
+    likes = 0
+    for item in food_items_list:
+        likes = likes + item.likes
+
+    return likes
+
+def getNumFavorited(id):
+    restaurants = Restaurant.objects.filter(owner__id=id).all()
+    favorites = 0
+    for restaurant in restaurants:
+        favorites = favorites + restaurant.favorites
+
+    return favorites
+
+def avgRatings(id):
+    restaurants = Restaurant.objects.filter(owner_id= id)
+    sum = 0
+    count = 0
+    for restaurant in restaurants:
+        rating = getRating(restaurant.name)
+        if rating is not None:
+            sum = sum + rating
+            count = count + 1
+
+    if count != 0:
+        return int(sum/count)
+    else:
+        return None
+
+def getMenu(id):
+    restaurant = Restaurant.objects.filter(owner_id= id)
+    list = []
+    for r in restaurant:
+        menu = FoodItem.objects.filter(menu__restaurant__name=r.name)
+        list.append({'name': r.name, 'menu': menu})
+    return list
