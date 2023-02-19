@@ -2,10 +2,19 @@
 from django import forms
 
 from Price_Comp.settings import BASE_DIR
-from .models import FoodItem, Restaurant, Reviews
+from .models import FoodItem, Restaurant, Reviews,Owner
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import os
+
+class OwnerRegistrationForm(forms.ModelForm):
+     class Meta:
+        model = Owner
+        fields = ['first_name', 'last_name']
+        widgets = {
+        'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+        'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 class ReviewForm(forms.ModelForm):
     class Meta:
