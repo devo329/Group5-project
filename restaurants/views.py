@@ -8,34 +8,21 @@ from .forms import *
 from .functions import *
 from django.contrib import messages
 from django.contrib.auth import login, logout
-import re
 
 def loading_screen(request):
     return render(request, 'loading.html')
 
-
 def index(request):
     restaurants = Restaurant.objects.all()
     restaurant_rating_data = getRatings(restaurants)
-    owners = Owner.objects.all()
-    context = {'restaurant_rating_data': restaurant_rating_data, 'owners' : owners}
+    owner = ""
+    try:
+        owner = Owner.objects.get(user = request.user)
+    except:
+       owner = None
+
+    context = {'restaurant_rating_data': restaurant_rating_data, 'owner' : owner}
     return render(request, "index.html", context)
-
-
-def parse_mins(id):
-    info = Restaurant.objects.get(name=id)
-    uber_time = info.uber_delivery_time
-    doordash_time = info.doordash_delivery_time
-
-    match = re.search(r'^(\d+)', uber_time)
-    if match:
-        uber_time = int(match.group(1))
-
-    match = re.search(r'^(\d+)', doordash_time)
-    if match:
-        doordash_time = int(match.group(1))
-
-    return(uber_time,doordash_time)
 
 def restaurant(request):
     id = request.GET.get('id')
@@ -124,6 +111,18 @@ def addReview(request):
         form = ReviewForm()
 
     return redirect(reverse('restaurant') + "?id=McDonalds")
+
+@login_required
+def register_owner(request):
+    if request.method == "POST":
+        form = OwnerRegistrationForm(request.POST)
+        if form.is_valid():
+            owner = form.save(commit=False)
+            owner.user = request.user
+            owner.save()
+            return redirect('index')
+    form = OwnerRegistrationForm()
+    return render (request=request, template_name="owner-register.html", context={"register_form":form})
 
 def register_request(request):
 	if request.method == "POST":
