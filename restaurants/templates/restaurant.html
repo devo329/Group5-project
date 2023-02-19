@@ -56,7 +56,6 @@
   </form>
 </div>
 {% endfor %}
-
   <!-- Name + Banner -->
   {% for restaurant in restaurant %}
   <div class="card text-center">
@@ -76,7 +75,7 @@
       <div class="col-sm-6" style="padding-bottom: 20px;">
         <div class="card">
           <div class="card-body">
-            {% if restaurant.doordash_delivery_time > restaurant.uber_delivery_time %}
+            {% if uber_time <= doordash_time %}
             <h5 style="color: green;" class="card-title">Uber Delivery Time:</h5>
             <h5 style="color: green;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
             {% else %}
@@ -84,16 +83,13 @@
             <h5 style="color: red;" class="card-text"><u>{{restaurant.uber_delivery_time}}</u></h5>
             {% endif %}
           </div>
-          <form action="{{restaurant.uberlink}}" method="get" target="_blank">
-            <button type="submit">Uber</button>
-          </form>
         </div>
       </div>
       <!-- DoorDash Delivery Time -->
       <div class="col-sm-6" style="padding-bottom: 20px;">
         <div class="card">
           <div class="card-body">
-            {% if restaurant.uber_delivery_time > restaurant.doordash_delivery_time %}
+            {% if uber_time >= doordash_time %}
             <h5 style="color: green;" class="card-title">DoorDash Delivery Time:</h5>
             <h5 style="color: green;" class="card-text"><u>{{restaurant.doordash_delivery_time}}</u></h5>
             {% else %}
@@ -101,9 +97,6 @@
             <h5 style="color: red;" class="card-text"><u>{{restaurant.doordash_delivery_time}}</u></h5>
             {% endif %}
           </div>
-          <form action="{{restaurant.doordashlink}}" method="get" target="_blank">
-            <button type="submit">DoorDash</button>
-          </form>
         </div>
       </div>
     </div>
