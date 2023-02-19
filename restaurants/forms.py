@@ -26,6 +26,32 @@ class NewUserForm(UserCreationForm):
 			user.save()
 		return user
 
+class FoodItemForm(forms.ModelForm):
+    class Meta:
+        model = FoodItem
+        fields = ['name', 'image_name', 'type']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'type': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    image_name = forms.FileField(required=True)
+    def save(self, commit=True):
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'restaurants/static/fooditem')
+        fooditem = super(FoodItemForm, self).save(commit=False)
+
+        image_file = self.cleaned_data.get('image_name', None)
+        if image_file:
+            file_path = os.path.join(MEDIA_ROOT, image_file.name)
+            with open(file_path, 'wb') as destination:
+                for chunk in image_file.chunks():
+                    destination.write(chunk)
+            fooditem.image_name = image_file.name
+
+        if commit:
+            fooditem.save()
+        return fooditem
+
 class RestaurantForm(forms.ModelForm):
     class Meta:
         model = Restaurant

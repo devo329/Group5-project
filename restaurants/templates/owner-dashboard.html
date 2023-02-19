@@ -308,7 +308,39 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       {{restaurant.data.name}}
+        <form id="fooditem-form" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="fooditem_form">
+          <input type="hidden" name="restaurant" value="{{data.restaurant.name}}">
+          <div class="form-group">
+            <label for="id_name">Name</label>
+            {{ form2.name }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_phone">DoorDash Price</label>
+            <input class="form-control" name="doordash_price" type="text" aria-label="doordash_price">
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_address">UberEats Price</label>
+            <input class="form-control" name="uber_price" type="text" aria-label="uber_price">
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_cuisine">Cuisine</label>
+            {{ form2.type }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_image_name">Image Name</label>
+            <br>
+            {{ form2.image_name }}
+          </div>
+          <br>
+          <button type="submit" class="btn btn-outline-danger"
+            style=" border-color: red; hover-color: white;">Submit</button>
+        </form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" data-bs-target="#exampleModalToggle-{{data.restaurant.id}}" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button>
@@ -369,11 +401,13 @@
           <br>
           <div class="form-group">
             <label for="id_image_name">Image Name</label>
+            <br>
             {{ form.image_name }}
           </div>
           <br>
           <div class="form-group">
             <label for="id_banner_name">Banner Name</label>
+            <br>
             {{ form.banner_name }}
           </div>
           <br>

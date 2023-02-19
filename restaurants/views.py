@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import NewUserForm, ReviewForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from .models import *
 from .forms import *
@@ -124,20 +124,15 @@ def logout_request(request):
 	messages.info(request, "You have successfully logged out.")
 	return redirect("index")
 
-def getMenu(id):
-    restaurant = Restaurant.objects.filter(owner_id= id)
-    list = []
-    for r in restaurant:
-        menu = FoodItem.objects.filter(menu__restaurant__name=r.name)
-        list.append({'name': r.name, 'menu': menu})
-    return list
-
+@login_required
 def create_restaurant(request):
     id = request.GET.get('id')
-    context = {}
+    owner = get_object_or_404(Owner, id=id)
+    if request.user != owner.user:
+        return redirect('index')
     if request.method == 'POST':
         form_type = request.POST.get('form_type')
-        print(form_type)
+        restaurant_name = request.POST.get('restaurant')
         if form_type == 'restaurant_form':
             form = RestaurantForm(request.POST, request.FILES)
             if form.is_valid():
@@ -145,8 +140,24 @@ def create_restaurant(request):
                 restaurant.owner = Owner.objects.filter(id= id)[:1].get()
                 restaurant.save()
                 return redirect('index')
+        if form_type == 'fooditem_form':
+            form = FoodItemForm(request.POST, request.FILES)
+            if form.is_valid():
+                item = form.save(commit=False)
+                item.uber_price = float(request.POST.get('uber_price'))
+                item.doordash_price = float(request.POST.get('doordash_price'))
+                item.save()
+                try:
+                    menu = Menu.objects.get(restaurant__name = restaurant_name)
+                except:
+                    r = Restaurant.objects.get(name = restaurant_name)
+                    menu = Menu(restaurant = r)
+                    menu.save()
+                menu.food_items.add(item)
+                return redirect('index')
 
     form = RestaurantForm()
+    item_form = FoodItemForm()
     restaurant = Restaurant.objects.filter(owner_id= id)
     owner_info = Owner.objects.filter(id= id)[0]
     restaurants = Restaurant.objects.filter(owner__id=id).all()
@@ -159,6 +170,7 @@ def create_restaurant(request):
     context = {
         'menu' : menu,
         'form':form,
+        'form2' : item_form,
         'likes' : likes,
         'favorites' : favorites,
         'owner_info': owner_info,
