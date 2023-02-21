@@ -2,7 +2,7 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls'), name = 'login'),
     path("register", views.register_request, name="register"),
     path("", views.index, name="index"),
     path("deals", views.deals, name="deals"),
