@@ -51,6 +51,8 @@ def restaurant(request):
     num_reviews, reviews, count, distributed_list = getReviews(id)
     categories = getAndFormatCategories(id)
     uber_time, doordash_time = parse_mins(id)
+    uber_link = Restaurant.objects.get(name = id).uberlink
+    doordash_link = Restaurant.objects.get(name = id).doordashlink
     restaurants = Restaurant.objects.all()
     restaurant_rating_data = getRatings(restaurants)
     owner = ""
@@ -72,6 +74,8 @@ def restaurant(request):
         'uber_time': uber_time,
         'doordash_time': doordash_time,
         'restaurant_rating_data': restaurant_rating_data,
+        'uber_link' : uber_link,
+        'doordash_link' : doordash_link,
         'owner': owner
     }
     return render(request, "restaurant.html", context)
