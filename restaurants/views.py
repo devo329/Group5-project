@@ -144,6 +144,7 @@ def logout_request(request):
 @login_required
 def create_restaurant(request):
     id = request.GET.get('id')
+    restaurant = Restaurant.objects.filter(owner_id= id)
     owner = get_object_or_404(Owner, id=id)
     if request.user != owner.user:
         return redirect('index')
@@ -172,10 +173,18 @@ def create_restaurant(request):
                     menu.save()
                 menu.food_items.add(item)
                 return redirect('index')
+        if form_type == 'deals_form':
+            form = DealsForm(request.POST, request.FILES, restaurant_queryset=restaurant)
+            if form.is_valid():
+                deal = form.save(commit=False)
+                deal.owner = Owner.objects.get(id = id)
+                deal.save()
+                return redirect('index')
 
     form = RestaurantForm()
     item_form = FoodItemForm()
     restaurant = Restaurant.objects.filter(owner_id= id)
+    deals_form = DealsForm(restaurant_queryset=restaurant)
     owner_info = Owner.objects.filter(id= id)[0]
     restaurants = Restaurant.objects.filter(owner__id=id).all()
     restaurant_rating_data = getRatings(restaurants)
@@ -184,7 +193,11 @@ def create_restaurant(request):
     favorites = getNumFavorited(id)
     avg_rating = avgRatings(id)
     menu = getMenu(id)
+    deals = Deals.objects.filter(owner_id = id)
+    print(deals)
     context = {
+        'deals_form' : deals_form,
+        'deals' : deals,
         'menu' : menu,
         'form':form,
         'form2' : item_form,
