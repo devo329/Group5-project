@@ -46,7 +46,7 @@
               Restaurants
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              {% for data in restaurant_rating_data %}
+              {% for data in restaurant_rating_data2 %}
               <li class="nav-item">
                 <a class="nav-link" style = "color: black;"  href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
               </li>
@@ -409,7 +409,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" data-bs-target="#exampleModalToggle-{{data.restaurant.id}}" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button>
+        <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" data-bs-dismiss="modal"
+          data-bs-target="#exampleModalToggle-{{data.restaurant.id}}" data-bs-toggle="modal">&#x2190; Go Back</button>
       </div>
     </div>
   </div>
