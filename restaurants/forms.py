@@ -7,6 +7,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import os
 
+def validate_image_extension(value):
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.avif']
+    ext = os.path.splitext(value.name)[1]
+    if not ext.lower() in valid_extensions:
+        raise forms.ValidationError('Unsupported file extension.')
 
 class DealsForm(forms.ModelForm):
     class Meta:
@@ -23,7 +28,7 @@ class DealsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['restaurant'].queryset = restaurant_queryset
 
-    image_name = forms.FileField(required=True)
+    image_name = forms.FileField(validators=[validate_image_extension],required=True)
 
     def save(self, commit=True):
         MEDIA_ROOT = os.path.join(BASE_DIR, 'restaurants/static/deals')
@@ -82,7 +87,7 @@ class FoodItemForm(forms.ModelForm):
             'type': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-    image_name = forms.FileField(required=True)
+    image_name = forms.FileField(validators=[validate_image_extension],required=True)
     def save(self, commit=True):
         MEDIA_ROOT = os.path.join(BASE_DIR, 'restaurants/static/fooditem')
         fooditem = super(FoodItemForm, self).save(commit=False)
@@ -114,8 +119,8 @@ class RestaurantForm(forms.ModelForm):
         }
 
 
-    image_name = forms.FileField(required=True)
-    banner_name = forms.FileField(required=True)
+    image_name = forms.FileField(validators=[validate_image_extension],required=True)
+    banner_name = forms.FileField(validators=[validate_image_extension],required=True)
 
     def save(self, commit=True):
         RESTAURANT_ROOT = os.path.join(BASE_DIR, 'restaurants/static/restaurant')
