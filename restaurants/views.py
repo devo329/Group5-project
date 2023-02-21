@@ -164,11 +164,6 @@ def register_owner(request):
         owner = None
     return render(request=request, template_name="owner-register.html", context={"register_form": form, 'restaurant_rating_data': restaurant_rating_data})
 
-
-def getData():
-    return "hello"
-
-
 def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
