@@ -27,6 +27,10 @@ class DealsForm(forms.ModelForm):
 
     def save(self, commit=True):
         MEDIA_ROOT = os.path.join(BASE_DIR, 'restaurants/static/deals')
+        isExist = os.path.exists(MEDIA_ROOT)
+        if not isExist:
+            os.makedirs(MEDIA_ROOT)
+
         deal = super(DealsForm, self).save(commit=False)
 
         image_file = self.cleaned_data.get('image_name', None)

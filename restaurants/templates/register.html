@@ -13,35 +13,90 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
 
   <!--Navbar-->
-  <nav class="navbar navbar-light" style="background-color: rgb(232, 218, 68);">
+  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: rgb(232, 218, 68);">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'index' %}">
         <!-- logo -->
         <img src="/static/logo.png" alt="" width="60" height="48" class="d-inline-block align-text-top">
       </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
           </li>
-          {% for data in restaurant_rating_data %}
           <li class="nav-item">
-            <a class="nav-link" href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'deals' %}">Deals</a>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" style = "color: black;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Restaurants
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% for data in restaurant_rating_data %}
+              <li class="nav-item">
+                <a class="nav-link" style = "color: black;"  href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
+              </li>
           {% endfor %}
+            </ul>
+          </li>
         </ul>
+
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+              <li class="nav-item" style="padding-top: 8px;">
+                <a style = "color: black;" class="nav-link" href="#">Welcome, {{user.username}}</a>
+              </li>
+                {% if owner is None %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/register">
+                    <button type="submit" class="btn btn-outline-danger">Register as Owner</button>
+                  </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/dashboard?id={{owner.id}}">
+                    <button type="submit" class="btn btn-outline-danger">Owner Dashboard</button>
+                  </a>
+                </li>
+                {%endif%}
+
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">
+                  <button type="submit" class="btn btn-outline-danger">Logout</button>
+                </a>
+              </li>
+
+              {% else %}
+
+              <li class="nav-item">
+                <a class="nav-link" href="accounts/login">
+                  <button type="submit" class="btn btn-outline-danger">Login</button>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/register">
+                  <button type="submit" class="btn btn-outline-danger">Sign Up</button>
+                </a>
+              </li>
+
+              {% endif %}
+            </ul>
       </div>
     </div>
   </nav>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body style="font-family: 'Rubik', sans-serif;">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
     <!--Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
       integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
@@ -52,21 +107,21 @@
     <!--Bootstrap JS-->
 
 <div style="padding-left:10px;">
-  {% block content %} 
+  {% block content %}
 
-  {% load crispy_forms_tags %}         
-  
-  <!--Register--> 
+  {% load crispy_forms_tags %}
+
+  <!--Register-->
   <div class="container py-5">
     <h1>Register</h1>
     <form method="POST">
       {% csrf_token %}
-      {{ register_form|crispy }}                    
+      {{ register_form|crispy }}
       <button class="btn btn-outline-danger " type="submit">Register</button>
     </form>
     <p class="text-center">If you already have an account, <a href="accounts/login">login</a> instead.</p>
   </div>
-  
+
   {% endblock %}
   </div>
 </div>
