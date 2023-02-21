@@ -78,6 +78,12 @@
   </div>
   <br>
 
+  <div class="container-md text-center" style="padding: 20px; ">
+    <h3 class="card-title">{{restaurant.name}}</h3>
+    <img src="/static/banners/owner-banner.jpg" style="width: 50%; height:200px; border-radius:55px; object-fit: cover;"
+      class="card-img-top" alt="...">
+  </div>
+
   <!-- Owner Information Summary -->
   <div class="card text-center">
     <!-- Other Info -->
@@ -90,7 +96,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title" style="color:black">Restaurants Owned:</h5>
-              <h5 class="card-text" style="color:black">{{restaurant.price_range}}</h5>
+              <h5 class="card-text" style="color:black">{{restaurants_owned}}</h5>
             </div>
           </div>
         </div>
@@ -99,7 +105,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title" style="color:black">Total Likes:</h5>
-              <h5 class="card-text" style="color:black">{{restaurant.cuisine}}</h5>
+              <h5 class="card-text" style="color:black">{{likes}}</h5>
             </div>
           </div>
         </div>
@@ -108,7 +114,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title" style="color:black">Favorited:</h5>
-              <h5 class="card-text" style="color:black">{{restaurant.phone}}</h5>
+              <h5 class="card-text" style="color:black">{{favorites}}</h5>
             </div>
           </div>
         </div>
@@ -191,79 +197,282 @@
   <!-- Restaurant Info -->
 
   <!--Cards-->
-  <button type="button" class="btn btn-outline-danger"
-  style=" border-color: red; hover-color: white;" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-    Launch demo modal
-  </button>
 
-</body>
-  <!-- Form -->
-  <div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
-    style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Add a Restaurant</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="restaurant-form" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-              <label for="id_name">Name</label>
-              {{ form.name }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_address">Address</label>
-              {{ form.address }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_phone">Phone</label>
-              {{ form.phone }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_cuisine">Cuisine</label>
-              {{ form.cuisine }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_price_range">Price Range</label>
-              {{ form.price_range }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_owner">Owner</label>
-              {{ form.owner }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_uber_delivery_time">Uber Delivery Time</label>
-              {{ form.uber_delivery_time }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_doordash_delivery_time">DoorDash Delivery Time</label>
-              {{ form.doordash_delivery_time }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_image_name">Image Name</label>
-              {{ form.image_name }}
-            </div>
-            <br>
-            <div class="form-group">
-              <label for="id_banner_name">Banner Name</label>
-              {{ form.banner_name }}
-            </div>
-            <br>
-            <button type="submit" class="btn btn-outline-danger"
-              style=" border-color: red; hover-color: white;">Submit</button>
-          </form>
+  <!--Cards-->
+  <div class="row" style="padding: 50px">
+    <h2 style="padding-bottom:10px;">Your Restaurants:</h2>
+    <hr>
+    <div class="col-sm-4" style="padding-bottom: 20px;">
+      <div class="card">
+        <img src="https://cwdaust.com.au/wpress/wp-content/uploads/2015/04/placeholder-restaurant.png"
+          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Add a Restaurant</h5>
+          <p><br></p>
+          <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
+            data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+            Add a Restaurant
+          </button>
         </div>
       </div>
     </div>
+
+    {% for data in restaurant_rating_data %}
+    <div class="col-sm-4" style="padding-bottom: 20px;">
+      <div class="card">
+        <img src="/static/restaurant/{{data.restaurant.image_name}}" style="height: 300px; object-fit: cover;"
+          class="card-img-top " alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{data.restaurant.name}}</h5>
+          <!-- <p class="card-text"> Average Rating: {{ data.avg_rating }}</p> -->
+          <p class="card-text">
+            {%if data.avg_rating is None%}
+            No Reviews
+            {% elif data.avg_rating is 1%}
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            {% elif data.avg_rating is 2%}
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            {% elif data.avg_rating is 3%}
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            {% elif data.avg_rating is 4%}
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: #999" class="fa fa-star"></i>
+            {% elif data.avg_rating is 5%}
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            <i style="color: gold" class="fa fa-star"></i>
+            {% endif %}
+          </p>
+          <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
+            data-bs-toggle="modal" data-bs-target="#exampleModalToggle-{{data.restaurant.id}}">
+            Menu
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
   </div>
+
+  <div class="row" style="padding: 50px">
+    <h2 style="padding-bottom:10px;">Your Deals:</h2>
+    <hr>
+    <div class="col-sm-4" style="padding-bottom: 20px;">
+      <div class="card">
+        <img src="/static/banners/discount.png"
+          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Add a Deal</h5>
+          <p><br></p>
+          <button type="button" class="btn btn-outline-danger" data-bs-target="#DealsToggle" data-bs-toggle="modal" data-bs-dismiss="modal" style=" border-color: red; hover-color: white;">
+            Add a Deal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {% for deal in deals %}
+    <div class="col-sm-4" style="padding-bottom: 20px;">
+      <div class="card">
+        <img src="/static/deals/{{deal.image_name}}"
+          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
+        <div class="card-body">
+          <h4 class="card-title">{{deal.name}}</h4>
+          <h5 class="card-title">Code: {{deal.code}}</h5>
+          <p>{{deal.restaurant.name}}</p>
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+  </div>
+
+
+</body>
+
+{% for data in restaurant_rating_data %}
+<div class="modal fade" id="exampleModalToggle-{{data.restaurant.id}}"
+  aria-labelledby="exampleModalToggleLabel-{{data.restaurant.id}}" tabindex="-1" style="display: none;"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel-{{data.restaurant.id}}">Menu</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {%for m in menu%}
+        {%if m.name == data.restaurant.name%}
+        {%for item in m.menu%}
+        {{item.name}}
+        <hr>
+        {%endfor%}
+        {%endif%}
+        {%endfor%}
+        <button type="button" class="btn btn-outline-danger" data-bs-target="#exampleModalToggle2-{{data.restaurant.id}}" data-bs-toggle="modal" data-bs-dismiss="modal" style=" border-color: red; hover-color: white;">
+          Add a Menu Item
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Food Item Form -->
+<div class="modal fade" id="exampleModalToggle2-{{data.restaurant.id}}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2-{{data.restaurant.id}}" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel2-{{data.restaurant.id}}">Add a Menu Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="fooditem-form" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="fooditem_form">
+          <input type="hidden" name="restaurant" value="{{data.restaurant.name}}">
+          <div class="form-group">
+            <label for="id_name">Name</label>
+            {{ form2.name }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_phone">DoorDash Price</label>
+            <input class="form-control" name="doordash_price" type="text" aria-label="doordash_price">
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_address">UberEats Price</label>
+            <input class="form-control" name="uber_price" type="text" aria-label="uber_price">
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_cuisine">Cuisine</label>
+            {{ form2.type }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_image_name">Image Name</label>
+            <br>
+            {{ form2.image_name }}
+          </div>
+          <br>
+          <button type="submit" class="btn btn-outline-danger"
+            style=" border-color: red; hover-color: white;">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle-{{data.restaurant.id}}" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+
+<!-- Restaurant Form -->
+<div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add a Restaurant</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="restaurant-form" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="restaurant_form">
+          <div class="form-group">
+            <label for="id_name">Name</label>
+            {{ form.name }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_address">Address</label>
+            {{ form.address }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_phone">Phone</label>
+            {{ form.phone }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_cuisine">Cuisine</label>
+            {{ form.cuisine }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_price_range">Price Range</label>
+            {{ form.price_range }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_uber_delivery_time">Uber Delivery Time</label>
+            {{ form.uber_delivery_time }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_doordash_delivery_time">DoorDash Delivery Time</label>
+            {{ form.doordash_delivery_time }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_image_name">Image Name</label>
+            <br>
+            {{ form.image_name }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_banner_name">Banner Name</label>
+            <br>
+            {{ form.banner_name }}
+          </div>
+          <br>
+          <button type="submit" class="btn btn-outline-danger"
+            style=" border-color: red; hover-color: white;">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="DealsToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Create a Deal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="deals_form">
+          {{ deals_form.as_p }}
+          <button type="submit" class="btn btn-outline-danger"
+          style=" border-color: red; hover-color: white;">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </html>

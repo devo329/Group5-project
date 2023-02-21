@@ -44,10 +44,22 @@
 
         <ul class="navbar-nav mb-2 mb-lg-0">
           {% if user.is_authenticated %}
-
               <li class="nav-item" style="padding-top: 8px;">
                 <a class="nav-link" href="#">Welcome, {{user.username}}</a>
               </li>
+                {% if owner is None %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/register">
+                    <button type="submit" class="btn btn-outline-danger">Register as Owner</button>
+                  </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/dashboard?id={{owner.id}}">
+                    <button type="submit" class="btn btn-outline-danger">Owner Dashboard</button>
+                  </a>
+                </li>
+                {%endif%}
 
               <li class="nav-item">
                 <a class="nav-link" href="/logout">

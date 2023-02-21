@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import NewUserForm, ReviewForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from .models import *
 from .forms import *
@@ -9,22 +9,20 @@ from .functions import *
 from django.contrib import messages
 from django.contrib.auth import login, logout
 
-
 def loading_screen(request):
     return render(request, 'loading.html')
-
 
 def index(request):
     restaurants = Restaurant.objects.all()
     restaurant_rating_data = getRatings(restaurants)
-    owners = Owner.objects.all()
-    owners_list = []
-    for owner in owners:
-        owners_list.append(owner.user)
+    owner = ""
+    try:
+        owner = Owner.objects.get(user = request.user)
+    except:
+       owner = None
 
-    context = {'restaurant_rating_data': restaurant_rating_data, 'owners' : owners}
+    context = {'restaurant_rating_data': restaurant_rating_data, 'owner' : owner}
     return render(request, "index.html", context)
-
 
 def restaurant(request):
     id = request.GET.get('id')
@@ -32,10 +30,11 @@ def restaurant(request):
     featured = FoodItem.objects.filter(
         menu__restaurant__name=id).order_by('-likes')[:3]
     info = Restaurant.objects.filter(name=id)
+    parse_mins(id)
     rating = getRating(id)
     num_reviews, reviews, count, distributed_list = getReviews(id)
     categories = getAndFormatCategories(id)
-
+    uber_time,doordash_time = parse_mins(id)
     context = {'menu': menu,
                'restaurant': info,
                'featured': featured,
@@ -46,6 +45,8 @@ def restaurant(request):
                'count': count,
                'distributions': distributed_list,
                'name': id,
+               'uber_time' : uber_time,
+               'doordash_time' : doordash_time
                }
     return render(request, "restaurant.html", context)
 
@@ -111,6 +112,18 @@ def addReview(request):
 
     return redirect(reverse('restaurant') + "?id=McDonalds")
 
+@login_required
+def register_owner(request):
+    if request.method == "POST":
+        form = OwnerRegistrationForm(request.POST)
+        if form.is_valid():
+            owner = form.save(commit=False)
+            owner.user = request.user
+            owner.save()
+            return redirect('index')
+    form = OwnerRegistrationForm()
+    return render (request=request, template_name="owner-register.html", context={"register_form":form})
+
 def register_request(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
@@ -128,23 +141,71 @@ def logout_request(request):
 	messages.info(request, "You have successfully logged out.")
 	return redirect("index")
 
+@login_required
 def create_restaurant(request):
     id = request.GET.get('id')
+    restaurant = Restaurant.objects.filter(owner_id= id)
+    owner = get_object_or_404(Owner, id=id)
+    if request.user != owner.user:
+        return redirect('index')
     if request.method == 'POST':
-        form = RestaurantForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('index')
-    else:
-        form = RestaurantForm()
-        restaurant = Restaurant.objects.filter(owner_id= id)
-        owner_info = Owner.objects.filter(id= id)[0]
-        restaurants = Restaurant.objects.all()
-        restaurant_rating_data = getRatings(restaurants)
-        context = {
-            'form':form,
-            'owner_info': owner_info,
-            'restaurant_rating_data': restaurant_rating_data,
-        }
+        form_type = request.POST.get('form_type')
+        restaurant_name = request.POST.get('restaurant')
+        if form_type == 'restaurant_form':
+            form = RestaurantForm(request.POST, request.FILES)
+            if form.is_valid():
+                restaurant = form.save(commit=False)
+                restaurant.owner = Owner.objects.filter(id= id)[:1].get()
+                restaurant.save()
+                return redirect('index')
+        if form_type == 'fooditem_form':
+            form = FoodItemForm(request.POST, request.FILES)
+            if form.is_valid():
+                item = form.save(commit=False)
+                item.uber_price = float(request.POST.get('uber_price'))
+                item.doordash_price = float(request.POST.get('doordash_price'))
+                item.save()
+                try:
+                    menu = Menu.objects.get(restaurant__name = restaurant_name)
+                except:
+                    r = Restaurant.objects.get(name = restaurant_name)
+                    menu = Menu(restaurant = r)
+                    menu.save()
+                menu.food_items.add(item)
+                return redirect('index')
+        if form_type == 'deals_form':
+            form = DealsForm(request.POST, request.FILES, restaurant_queryset=restaurant)
+            if form.is_valid():
+                deal = form.save(commit=False)
+                deal.owner = Owner.objects.get(id = id)
+                deal.save()
+                return redirect('index')
 
+    form = RestaurantForm()
+    item_form = FoodItemForm()
+    restaurant = Restaurant.objects.filter(owner_id= id)
+    deals_form = DealsForm(restaurant_queryset=restaurant)
+    owner_info = Owner.objects.filter(id= id)[0]
+    restaurants = Restaurant.objects.filter(owner__id=id).all()
+    restaurant_rating_data = getRatings(restaurants)
+    restaurants_owned = len(restaurants)
+    likes = getNumLikes(id)
+    favorites = getNumFavorited(id)
+    avg_rating = avgRatings(id)
+    menu = getMenu(id)
+    deals = Deals.objects.filter(owner_id = id)
+    print(deals)
+    context = {
+        'deals_form' : deals_form,
+        'deals' : deals,
+        'menu' : menu,
+        'form':form,
+        'form2' : item_form,
+        'likes' : likes,
+        'favorites' : favorites,
+        'owner_info': owner_info,
+        'restaurant_rating_data': restaurant_rating_data,
+        'restaurants_owned' : restaurants_owned,
+        'rating' : avg_rating,
+    }
     return render(request, 'owner-dashboard.html', context)
