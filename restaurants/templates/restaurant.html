@@ -267,8 +267,8 @@
             alt="...">
           <div class="card-body">
             <h5 class="card-title">{{item.name}}</h5>
-            {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
-              {{item.doordash_price}}</p>
+            {% if item.uber_price < item.doordash_price %}
+              <p style="color:red;" class="card-text">Doordash Price:{{item.doordash_price}}</p>
               <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
               {% else %}
               <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
@@ -295,14 +295,13 @@
             alt="...">
           <div class="card-body">
             <h5 class="card-title">{{item.name}}</h5>
-            {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
-              {{item.doordash_price}}</p>
-              <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-              {% else %}
-              <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
-              <p style="color:red;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-              <a href="{{data.restaurant.uberlink}}" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">Menu</a>
-              {% endif %}
+            {% if item.uber_price < item.doordash_price %}
+            <a href="{{doordash_link}}" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">Doordash Price: {{item.doordash_price}}</a>
+            <a href="{{uber_link}}" class="btn btn-outline-success" style=" border-color: green; hover-color: white;">UberEats Price: {{item.uber_price}}</a>
+            {% else %}
+            <a href="{{doordash_link}}" class="btn btn-outline-success" style=" border-color: green; hover-color: white;">Doordash Price: {{item.doordash_price}}</a>
+            <a href="{{uber_link}}" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">UberEats Price: {{item.uber_price}}</a>
+            {% endif %}
           </div>
           <!-- Like Button -->
           <div class="card-footer d-flex align-items-end justify-content-end">
