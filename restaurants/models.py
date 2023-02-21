@@ -68,8 +68,11 @@ class Reviews(models.Model):
     def __str__(self) -> str:
         return self.reviewer.username + ": " + self.restaurant.name + " - " + str(self.rating)
 
-
-
-
-
-
+class Deals(models.Model):
+    name = models.CharField(max_length=256)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Owner,on_delete=models.CASCADE)
+    image_name = models.CharField(max_length=256)
+    code = models.CharField(max_length=256, default= '')
+    def __str__(self) -> str:
+        return self.restaurant.name + " : " + self.name

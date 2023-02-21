@@ -270,6 +270,38 @@
     {% endfor %}
   </div>
 
+  <div class="row" style="padding: 50px">
+    <h2 style="padding-bottom:10px;">Your Deals:</h2>
+    <hr>
+    <div class="col-sm-4" style="padding-bottom: 20px;">
+      <div class="card">
+        <img src="/static/banners/discount.png"
+          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Add a Deal</h5>
+          <p><br></p>
+          <button type="button" class="btn btn-outline-danger" data-bs-target="#DealsToggle" data-bs-toggle="modal" data-bs-dismiss="modal" style=" border-color: red; hover-color: white;">
+            Add a Deal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {% for deal in deals %}
+    <div class="col-sm-4" style="padding-bottom: 20px;">
+      <div class="card">
+        <img src="/static/deals/{{deal.image_name}}"
+          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
+        <div class="card-body">
+          <h4 class="card-title">{{deal.name}}</h4>
+          <h5 class="card-title">Code: {{deal.code}}</h5>
+          <p>{{deal.restaurant.name}}</p>
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+  </div>
+
 
 </body>
 
@@ -300,6 +332,7 @@
   </div>
 </div>
 
+<!-- Food Item Form -->
 <div class="modal fade" id="exampleModalToggle2-{{data.restaurant.id}}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2-{{data.restaurant.id}}" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -351,7 +384,7 @@
 
 {% endfor %}
 
-<!-- Form -->
+<!-- Restaurant Form -->
 <div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
   style="display: none;" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -418,5 +451,28 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="DealsToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Create a Deal</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="deals_form">
+          {{ deals_form.as_p }}
+          <button type="submit" class="btn btn-outline-danger"
+          style=" border-color: red; hover-color: white;">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 </html>

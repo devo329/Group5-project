@@ -2,10 +2,44 @@
 from django import forms
 
 from Price_Comp.settings import BASE_DIR
-from .models import FoodItem, Restaurant, Reviews,Owner
+from .models import FoodItem, Restaurant, Reviews,Owner,Deals
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import os
+
+
+class DealsForm(forms.ModelForm):
+    class Meta:
+        model = Deals
+        fields = ['name', 'code', 'restaurant', 'image_name']
+        widgets = {
+        'name': forms.TextInput(attrs={'class': 'form-control'}),
+        'code': forms.TextInput(attrs={'class': 'form-control'}),
+        'restaurant': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        restaurant_queryset = kwargs.pop('restaurant_queryset', None)
+        super().__init__(*args, **kwargs)
+        self.fields['restaurant'].queryset = restaurant_queryset
+
+    image_name = forms.FileField(required=True)
+
+    def save(self, commit=True):
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'restaurants/static/deals')
+        deal = super(DealsForm, self).save(commit=False)
+
+        image_file = self.cleaned_data.get('image_name', None)
+        if image_file:
+            file_path = os.path.join(MEDIA_ROOT, image_file.name)
+            with open(file_path, 'wb') as destination:
+                for chunk in image_file.chunks():
+                    destination.write(chunk)
+            deal.image_name = image_file.name
+
+        if commit:
+            deal.save()
+        return deal
 
 class OwnerRegistrationForm(forms.ModelForm):
      class Meta:
