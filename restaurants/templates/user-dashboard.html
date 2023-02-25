@@ -109,7 +109,7 @@
   <!-- Name + Banner -->
   <div class="card text-center">
     <div class="card-header">
-      Welcome, {{owner_info.first_name}} {{owner_info.last_name}}
+      Welcome, {{User.first_name}} {{User.last_name}}
     </div>
   </div>
   <br>
@@ -131,8 +131,8 @@
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title" style="color:black">Restaurants Owned:</h5>
-              <h5 class="card-text" style="color:black">{{restaurants_owned}}</h5>
+              <h5 class="card-title" style="color:black">Restaurants Favorited:</h5>
+              <h5 class="card-text" style="color:black">{{numfavorited}}</h5>
             </div>
           </div>
         </div>
@@ -140,8 +140,8 @@
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title" style="color:black">Total Likes:</h5>
-              <h5 class="card-text" style="color:black">{{likes}}</h5>
+              <h5 class="card-title" style="color:black">Food Items Liked:</h5>
+              <h5 class="card-text" style="color:black">{{numliked}}</h5>
             </div>
           </div>
         </div>
@@ -149,8 +149,8 @@
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title" style="color:black">Favorited:</h5>
-              <h5 class="card-text" style="color:black">{{favorites}}</h5>
+              <h5 class="card-title" style="color:black">Deals Clipped:</h5>
+              <h5 class="card-text" style="color:black">{{numclipped}}</h5>
             </div>
           </div>
         </div>
@@ -158,13 +158,132 @@
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
-              <a style="cursor: pointer;">
-                <h5 style="color: black; text-decoration: underline;" class="card-title hover-underline-animation">
-                  Average Ratings:</h5>
-              </a>
+                <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                    <h5 style="color: black; text-decoration: underline;" class="card-title hover-underline-animation">
+                      Restaurants Reviewed:</h5>
+                  </a>
               <h5 style="color:black" class="card-text">
-                {%if rating is None%}
-                No Reviews
+                {{reviewed}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Restaurant Info -->
+  <!-- Owner Information Summary -->
+
+  <div class="container my-3">
+    <div class="col-md-12 text-center scrolldiv" style="padding: 10px;">
+      <a href="#favoritedheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">Favorited Restaurants</a>
+      <a href="#likedheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white;margin-right: 10px;">Food Items Liked</a>
+      <a href="#clippedheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white;margin-right: 10px;">Deals Clipped</a>
+    </div>
+  </div>
+  <hr>
+<style>
+.scrolldiv {
+  display: flex;
+  justify-content: space-around;
+}
+.scrollbutton {
+  width: 100%;
+  margin: 5px; /* or whatever you like */
+}
+</style>
+
+  <div data-bs-spy="scroll" tabindex="0">
+    <!--Cards-->
+    <br>
+    <div class="row" style="padding-top: 25px; padding-left: 50px; padding-right: 50px; padding-bottom: 50px">
+      <h2 id="favoritedheading" style="padding-bottom:10px;">Favorited Restaurants:</h2>
+      <hr>
+      {% for favorite in favorited %}
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="/static/restaurant/{{favorite.image_name}}" style="height: 300px; object-fit: cover;"
+            class="card-img-top " alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{favorite.name}}</h5>
+            <br>
+            <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
+              data-bs-toggle="modal" data-bs-target="#exampleModalToggle-{{favorite.id}}">
+              Menu
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="row" style="padding-top: 25px; padding-left: 50px; padding-right: 50px; padding-bottom: 50px">
+        <h2 id="likedheading" style="padding-bottom:10px;">Liked Food Items:</h2>
+        <hr>
+        {% for like in liked %}
+        <div class="col-sm-4" style="padding-bottom: 20px;">
+          <div class="card">
+            <img src="/static/restaurant/{{favorite.image_name}}" style="height: 300px; object-fit: cover;"
+              class="card-img-top " alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{like.name}}</h5>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+    <div class="row" style="padding: 50px">
+      <h2 id="clippedheading" style="padding-bottom:10px;">Deals Clipped</h2>
+      <hr>
+      {% for clip in clipped %}
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="/static/deals/{{clip.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top "
+            alt="...">
+          <div class="card-body">
+            <h4 class="card-title">{{clip.name}}</h4>
+            <h5 class="card-title">Code: {{clip.code}}</h5>
+            <p>{{clip.restaurant.name}}</p>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+</div>
+</body>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Reviews</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card text-center">
+          <h5 class="card-header">Overview</h5>
+          <div class="card-body">
+
+            {% for c in distributions %}
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+              <div style="width: 100px; text-align: right; margin-right: 10px;">{{c.rating}} <i style="color: gold"
+                  class="fa fa-star"></i></div>
+              <div class="progress" style="width: 50%; flex-grow: 1;">
+                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ c.distribution }}"
+                  aria-valuemin="0" aria-valuemax="100" style="width: {{ c.distribution }}%;">
+                </div>
+              </div>
+            </div>
+            <br>
+            {% endfor %}
+
+            <h5 class="card-title">
+              <h5 class="card-title">
+                {%if reviewed == 0%}
+                You Haven't Left Any Reviews Yet
                 {% elif rating is 1%}
                 <i style="color: gold" class="fa fa-star"></i>
                 <i style="color: #999" class="fa fa-star"></i>
@@ -197,381 +316,67 @@
                 <i style="color: gold" class="fa fa-star"></i>
                 {% endif %}
               </h5>
+              {%if rating == 0%}
+
+              {% else %}
+              <p class="card-text">You have left {{reviewed}} reviews with an average rating of {{rating}}.0</p>
+              {%endif%}
+          </div>
+        </div>
+
+        <h5 class="card-title">
+          <br>
+          {% for review in reviews%}
+          <div class="card">
+            <div class="card-header">
+              {{review.restaurant}}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">
+                {%if rating is None%}
+                No Reviews
+                {% elif review.rating is 1%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif review.rating is 2%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif review.rating is 3%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif review.rating is 4%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif review.rating is 5%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                {% endif %}
+              </h5>
+              <p class="card-text">{{review.review}}</p>
+            </div>
+            <div class="card-footer text-muted">
+              {{review.created_at}}
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Restaurant Info -->
-  <!-- Owner Information Summary -->
-
-  <div class="container my-3">
-    <div class="col-md-12 text-center scrolldiv" style="padding: 10px;">
-      <a href="#restaurantheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">Restaurants</a>
-      <a href="#dealsheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white;margin-right: 10px;">Deals</a>
-      <a href="#competitionsheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white;margin-right: 10px;">Competition</a>
-    </div>
-  </div>
-  <hr>
-<style>
-.scrolldiv {
-  display: flex;
-  justify-content: space-around;
-}
-.scrollbutton {
-  width: 100%;
-  margin: 5px; /* or whatever you like */
-}
-</style>
-
-  <div data-bs-spy="scroll" tabindex="0">
-    <!--Cards-->
-    <br>
-    <div class="row" style="padding-top: 25px; padding-left: 50px; padding-right: 50px; padding-bottom: 50px">
-      <h2 id="restaurantheading" style="padding-bottom:10px;">Your Restaurants:</h2>
-      <hr>
-      <div class="col-sm-4" style="padding-bottom: 20px;">
-        <div class="card">
-          <img src="https://cwdaust.com.au/wpress/wp-content/uploads/2015/04/placeholder-restaurant.png"
-            style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Add a Restaurant</h5>
-            <p><br></p>
-            <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
-              data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-              Add a Restaurant
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {% for data in restaurant_rating_data %}
-      <div class="col-sm-4" style="padding-bottom: 20px;">
-        <div class="card">
-          <img src="/static/restaurant/{{data.restaurant.image_name}}" style="height: 300px; object-fit: cover;"
-            class="card-img-top " alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{data.restaurant.name}}</h5>
-            <!-- <p class="card-text"> Average Rating: {{ data.avg_rating }}</p> -->
-            <p class="card-text">
-              {%if data.avg_rating is None%}
-              No Reviews
-              {% elif data.avg_rating is 1%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif data.avg_rating is 2%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif data.avg_rating is 3%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif data.avg_rating is 4%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif data.avg_rating is 5%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              {% endif %}
-            </p>
-            <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
-              data-bs-toggle="modal" data-bs-target="#exampleModalToggle-{{data.restaurant.id}}">
-              Menu
-            </button>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-
-    <div class="row" style="padding: 50px">
-      <h2 id="dealsheading" style="padding-bottom:10px;">Your Deals:</h2>
-      <hr>
-      <div class="col-sm-4" style="padding-bottom: 20px;">
-        <div class="card">
-          <img src="/static/banners/discount.png" style="height: 300px; object-fit: cover;" class="card-img-top "
-            alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Add a Deal</h5>
-            <p><br></p>
-            <button type="button" class="btn btn-outline-danger" data-bs-target="#DealsToggle" data-bs-toggle="modal"
-              data-bs-dismiss="modal" style=" border-color: red; hover-color: white;">
-              Add a Deal
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {% for deal in deals %}
-      <div class="col-sm-4" style="padding-bottom: 20px;">
-        <div class="card">
-          <img src="/static/deals/{{deal.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top "
-            alt="...">
-          <div class="card-body">
-            <h4 class="card-title">{{deal.name}}</h4>
-            <h5 class="card-title">Code: {{deal.code}}</h5>
-            <p>{{deal.restaurant.name}}</p>
-          </div>
-        </div>
-      </div>
-      {%endfor%}
-    </div>
-
-    <div class="row" style="padding: 50px">
-      <h2 id="competitionsheading" style="padding-bottom:10px;">Your Competitors:</h2>
-      <hr>
-      {% for data in competition %}
-      <div class="col-sm-4" style="padding-bottom: 20px;">
-        <div class="card">
-          <img src="/static/restaurant/{{data.restaurant.image_name}}" style="height: 300px; object-fit: cover;"
-            class="card-img-top " alt="...">
-          <div class="card-body">
-            <h5 class="card-title">{{data.restaurant.name}}</h5>
-            <!-- <p class="card-text"> Average Rating: {{ data.avg_rating }}</p> -->
-            <p class="card-text">
-              {%if data.avg_rating is None%}
-              No Reviews
-              {% elif data.avg_rating is 1%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif data.avg_rating is 2%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif data.avg_rating is 3%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif data.avg_rating is 4%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: #999" class="fa fa-star"></i>
-              {% elif data.avg_rating is 5%}
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              <i style="color: gold" class="fa fa-star"></i>
-              {% endif %}
-            </p>
-            <a href="/loading/restaurant/?id={{data.restaurant.name}}" class="btn btn-outline-danger"
-              style=" border-color: red; hover-color: white;">Menu</a>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-
-  </div>
-</body>
-
-{% for data in restaurant_rating_data %}
-<div class="modal fade" id="exampleModalToggle-{{data.restaurant.id}}"
-  aria-labelledby="exampleModalToggleLabel-{{data.restaurant.id}}" tabindex="-1" style="display: none;"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel-{{data.restaurant.id}}">Menu</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        {%for m in menu%}
-        {%if m.name == data.restaurant.name%}
-        {%for item in m.menu%}
-        {{item.name}}
-        <hr>
-        {%endfor%}
-        {%endif%}
-        {%endfor%}
-        <button type="button" class="btn btn-outline-danger"
-          data-bs-target="#exampleModalToggle2-{{data.restaurant.id}}" data-bs-toggle="modal" data-bs-dismiss="modal"
-          style=" border-color: red; hover-color: white;">
-          Add a Menu Item
-        </button>
+          <br>
+          {% endfor %}
       </div>
     </div>
   </div>
 </div>
-
-<!-- Food Item Form -->
-<div class="modal fade" id="exampleModalToggle2-{{data.restaurant.id}}" aria-hidden="true"
-  aria-labelledby="exampleModalToggleLabel2-{{data.restaurant.id}}" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalToggleLabel2-{{data.restaurant.id}}">Add a Menu Item</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="fooditem-form" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input type="hidden" name="form_type" value="fooditem_form">
-          <input type="hidden" name="restaurant" value="{{data.restaurant.name}}">
-          <div class="form-group">
-            <label for="id_name">Name</label>
-            {{ form2.name }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_phone">DoorDash Price</label>
-            <input class="form-control" name="doordash_price" type="text" aria-label="doordash_price">
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_address">UberEats Price</label>
-            <input class="form-control" name="uber_price" type="text" aria-label="uber_price">
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_cuisine">Cuisine</label>
-            {{ form2.type }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_image_name">Image Name</label>
-            <br>
-            {{ form2.image_name }}
-          </div>
-          <br>
-          <button type="submit" class="btn btn-outline-danger"
-            style=" border-color: red; hover-color: white;">Submit</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" data-bs-dismiss="modal"
-          data-bs-target="#exampleModalToggle-{{data.restaurant.id}}" data-bs-toggle="modal">&#x2190; Go Back</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-{% endfor %}
-
-<!-- Restaurant Form -->
-<div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
-  style="display: none;" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add a Restaurant</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="restaurant-form" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input type="hidden" name="form_type" value="restaurant_form">
-          <div class="form-group">
-            <label for="id_name">Name</label>
-            {{ form.name }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_address">Address</label>
-            {{ form.address }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_phone">Phone</label>
-            {{ form.phone }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_cuisine">Cuisine</label>
-            {{ form.cuisine }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_price_range">Price Range</label>
-            {{ form.price_range }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_uber_delivery_time">Uber Delivery Time</label>
-            {{ form.uber_delivery_time }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_doordash_delivery_time">DoorDash Delivery Time</label>
-            {{ form.doordash_delivery_time }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_doordash_delivery_time"> DoorDash Homepage</label>
-            {{ form.uberlink }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_doordash_delivery_time"> UberEats Homepage</label>
-            {{ form.doordashlink }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_image_name">Image Name</label>
-            <br>
-            {{ form.image_name }}
-          </div>
-          <br>
-          <div class="form-group">
-            <label for="id_banner_name">Banner Name</label>
-            <br>
-            {{ form.banner_name }}
-          </div>
-          <br>
-          <button type="submit" class="btn btn-outline-danger"
-            style=" border-color: red; hover-color: white;">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="DealsToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1" style="display: none;"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Create a Deal</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input type="hidden" name="form_type" value="deals_form">
-          {{ deals_form.as_p }}
-          <button type="submit" class="btn btn-outline-danger"
-            style=" border-color: red; hover-color: white;">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
 </html>

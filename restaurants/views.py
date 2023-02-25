@@ -39,10 +39,44 @@ def deals(request):
 def loading_screen(request):
     return render(request, 'loading.html')
 
+@login_required
 def user_dashboard(request):
     id = request.GET.get('id')
-    print(id)
-    return render(request, 'user-dashboard.html')
+    user = get_object_or_404(User, id=id)
+
+    if request.user != user:
+        return redirect('index')
+
+    favorited = Restaurant.objects.filter(favoriters = user)
+    clipped = Deals.objects.filter(clippers = user)
+    liked = FoodItem.objects.filter(likers = user)
+    reviews = Reviews.objects.filter(reviewer = user)
+    null, null, count, distributed_list = getReviews(user,'user')
+    sum = 0
+    count = 0
+    for r in reviews:
+        sum = sum + r.rating
+        count = count + 1
+
+    if count == 0:
+        rating = 0
+    else:
+        rating = sum/count
+
+    context = {
+        'favorited' : favorited,
+        'clipped' : clipped,
+        'liked' : liked,
+        'reviews' : reviews,
+        'numfavorited': len(favorited),
+        'numclipped' : len(clipped),
+        'numliked' : len(liked),
+        'reviewed' : len(reviews),
+        'count' : count,
+        'distributions' : distributed_list,
+        'rating' : int(rating)
+    }
+    return render(request, 'user-dashboard.html', context)
 
 def index(request):
     restaurants = Restaurant.objects.all()
@@ -65,7 +99,7 @@ def restaurant(request):
     info = Restaurant.objects.filter(name=id)
     parse_mins(id)
     rating = getRating(id)
-    num_reviews, reviews, count, distributed_list = getReviews(id)
+    num_reviews, reviews, count, distributed_list = getReviews(id,'restaurant')
     categories = getAndFormatCategories(id)
     uber_time, doordash_time = parse_mins(id)
     uber_link = Restaurant.objects.get(name = id).uberlink

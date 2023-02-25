@@ -52,9 +52,14 @@ def getRating(id):
     return rating
 
 
-def getReviews(id):
-    reviews = Reviews.objects.filter(restaurant__name=id).all()
-    reviews_count = Reviews.objects.filter(restaurant__name=id).values(
+def getReviews(id,type):
+    if type == 'restaurant':
+        reviews = Reviews.objects.filter(restaurant__name=id).all()
+        reviews_count = Reviews.objects.filter(restaurant__name=id).values(
+        'rating').annotate(c=Count('rating')).order_by('rating')
+    else:
+        reviews = Reviews.objects.filter(reviewer=id).all()
+        reviews_count = Reviews.objects.filter(reviewer=id).values(
         'rating').annotate(c=Count('rating')).order_by('rating')
 
     toReturn = []
