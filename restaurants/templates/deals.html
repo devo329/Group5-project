@@ -116,16 +116,18 @@
           style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
         <div class="card-body">
           <h4 class="card-title">{{deal.name}}</h4>
-          <h5 class="card-title">Code: {{deal.code}}</h5>
-          <p>{{deal.restaurant.name}}</p>
+          <form action="{% url 'clip' deal.id %}" method="post">
+            {% csrf_token %}
+          <button class="btn btn-outline-danger" style="border-style:dashed; border-color: red; hover-color: white;">Clip Deal <i class="fas fa-cut"></i></button>
+          </form>
         </div>
       </div>
     </div>
     {%endfor%}
   </div>
-
-
   <!--Cards-->
-</body>
 
+</body>
 </html>
+
+

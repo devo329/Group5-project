@@ -74,5 +74,8 @@ class Deals(models.Model):
     owner = models.ForeignKey(Owner,on_delete=models.CASCADE)
     image_name = models.CharField(max_length=256)
     code = models.CharField(max_length=256, default= '')
+    clipped = models.IntegerField(default=0)
+    clippers = models.ManyToManyField(User, related_name='clippers', blank=True)
+
     def __str__(self) -> str:
         return self.restaurant.name + " : " + self.name
