@@ -208,16 +208,28 @@
   <!-- Owner Information Summary -->
 
   <div class="container my-3">
-    <div class="col-md-12 text-center" style="padding: 10px;">
-      <a href="#restaurantheading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white; margin-right: 10px;">Restaurants</a>
-      <a href="#dealsheading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;margin-right: 10px;">Deals</a>
-      <a href="#competitionsheading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;margin-right: 10px;">Competition</a>
+    <div class="col-md-12 text-center scrolldiv" style="padding: 10px;">
+      <a href="#restaurantheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">Restaurants</a>
+      <a href="#dealsheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white;margin-right: 10px;">Deals</a>
+      <a href="#competitionsheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white;margin-right: 10px;">Competition</a>
     </div>
   </div>
 
+<style>
+.scrolldiv {
+  display: flex;
+  justify-content: space-around;
+}
+.scrollbutton {
+  width: 100%;
+  margin: 5px; /* or whatever you like */
+}
+</style>
+
   <div data-bs-spy="scroll" tabindex="0">
     <!--Cards-->
-    <div class="row" style="padding: 50px">
+    <br>
+    <div class="row" style="padding-top: 25px; padding-left: 50px; padding-right: 50px; padding-bottom: 50px">
       <h2 id="restaurantheading" style="padding-bottom:10px;">Your Restaurants:</h2>
       <hr>
       <div class="col-sm-4" style="padding-bottom: 20px;">
@@ -322,7 +334,8 @@
     </div>
 
     <div class="row" style="padding: 50px">
-      <h3 id="competitionsheading" style="text-align: center; padding-bottom:10px;">Your Competition</h3>
+      <h2 id="competitionsheading" style="padding-bottom:10px;">Your Competitors:</h2>
+      <hr>
       {% for data in competition %}
       <div class="col-sm-4" style="padding-bottom: 20px;">
         <div class="card">
