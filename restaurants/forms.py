@@ -107,7 +107,7 @@ class FoodItemForm(forms.ModelForm):
 class RestaurantForm(forms.ModelForm):
     class Meta:
         model = Restaurant
-        fields = ['name', 'address', 'phone', 'cuisine', 'price_range', 'uber_delivery_time', 'doordash_delivery_time', 'image_name', 'banner_name']
+        fields = ['name', 'address', 'phone', 'cuisine', 'price_range', 'uber_delivery_time', 'doordash_delivery_time', 'uberlink', 'doordashlink', 'image_name', 'banner_name']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
@@ -115,9 +115,10 @@ class RestaurantForm(forms.ModelForm):
             'cuisine': forms.TextInput(attrs={'class': 'form-control'}),
             'price_range': forms.TextInput(attrs={'class': 'form-control'}),
             'uber_delivery_time': forms.TextInput(attrs={'class': 'form-control'}),
+            'uberlink': forms.TextInput(attrs={'class': 'form-control'}),
+            'doordashlink': forms.TextInput(attrs={'class': 'form-control'}),
             'doordash_delivery_time': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
 
     image_name = forms.FileField(validators=[validate_image_extension],required=True)
     banner_name = forms.FileField(validators=[validate_image_extension],required=True)
