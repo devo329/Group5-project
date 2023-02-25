@@ -5,8 +5,8 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class Owner(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, primary_key=False)
 
     def __str__(self) -> str:
@@ -25,18 +25,18 @@ class FoodItem(models.Model):
         return self.name
 
 class Restaurant(models.Model):
-    name = models.CharField(max_length=60)
-    address = models.CharField(max_length=60)
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
     phone = models.CharField(max_length=10)
     cuisine = models.CharField(max_length=20) #food type
     price_range = models.CharField(max_length=7)
     owner = models.ForeignKey(Owner,on_delete=models.CASCADE)
     uber_delivery_time = models.CharField(max_length=10, default='0 Mins')
     doordash_delivery_time = models.CharField(max_length=10, default='0 Mins')
-    image_name = models.CharField(max_length=30,default='')
-    banner_name = models.CharField(max_length=30,default='')
-    uberlink = models.CharField(max_length=120, default='')
-    doordashlink = models.CharField(max_length=120, default='')
+    image_name = models.CharField(max_length=255,default='')
+    banner_name = models.CharField(max_length=255,default='')
+    uberlink = models.CharField(max_length=255, default='')
+    doordashlink = models.CharField(max_length=255, default='')
     favorites = models.IntegerField(default=0)
     favoriters = models.ManyToManyField(User, related_name='favoriters', blank=True)
 
