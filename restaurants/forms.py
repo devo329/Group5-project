@@ -2,10 +2,62 @@
 from django import forms
 
 from Price_Comp.settings import BASE_DIR
-from .models import FoodItem, Restaurant, Reviews
+from .models import FoodItem, Restaurant, Reviews,Owner,Deals
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import os
+
+def validate_image_extension(value):
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.avif']
+    ext = os.path.splitext(value.name)[1]
+    if not ext.lower() in valid_extensions:
+        raise forms.ValidationError('Unsupported file extension.')
+
+class DealsForm(forms.ModelForm):
+    class Meta:
+        model = Deals
+        fields = ['name', 'code', 'restaurant', 'image_name']
+        widgets = {
+        'name': forms.TextInput(attrs={'class': 'form-control'}),
+        'code': forms.TextInput(attrs={'class': 'form-control'}),
+        'restaurant': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        restaurant_queryset = kwargs.pop('restaurant_queryset', None)
+        super().__init__(*args, **kwargs)
+        self.fields['restaurant'].queryset = restaurant_queryset
+
+    image_name = forms.FileField(validators=[validate_image_extension],required=True)
+
+    def save(self, commit=True):
+        MEDIA_ROOT = os.path.join(BASE_DIR, 'restaurants/static/deals')
+        isExist = os.path.exists(MEDIA_ROOT)
+        if not isExist:
+            os.makedirs(MEDIA_ROOT)
+
+        deal = super(DealsForm, self).save(commit=False)
+
+        image_file = self.cleaned_data.get('image_name', None)
+        if image_file:
+            file_path = os.path.join(MEDIA_ROOT, image_file.name)
+            with open(file_path, 'wb') as destination:
+                for chunk in image_file.chunks():
+                    destination.write(chunk)
+            deal.image_name = image_file.name
+
+        if commit:
+            deal.save()
+        return deal
+
+class OwnerRegistrationForm(forms.ModelForm):
+     class Meta:
+        model = Owner
+        fields = ['first_name', 'last_name']
+        widgets = {
+        'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+        'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -35,7 +87,7 @@ class FoodItemForm(forms.ModelForm):
             'type': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-    image_name = forms.FileField(required=True)
+    image_name = forms.FileField(validators=[validate_image_extension],required=True)
     def save(self, commit=True):
         MEDIA_ROOT = os.path.join(BASE_DIR, 'restaurants/static/fooditem')
         fooditem = super(FoodItemForm, self).save(commit=False)
@@ -55,7 +107,7 @@ class FoodItemForm(forms.ModelForm):
 class RestaurantForm(forms.ModelForm):
     class Meta:
         model = Restaurant
-        fields = ['name', 'address', 'phone', 'cuisine', 'price_range', 'uber_delivery_time', 'doordash_delivery_time', 'image_name', 'banner_name']
+        fields = ['name', 'address', 'phone', 'cuisine', 'price_range', 'uber_delivery_time', 'doordash_delivery_time', 'uberlink', 'doordashlink', 'image_name', 'banner_name']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
@@ -63,12 +115,13 @@ class RestaurantForm(forms.ModelForm):
             'cuisine': forms.TextInput(attrs={'class': 'form-control'}),
             'price_range': forms.TextInput(attrs={'class': 'form-control'}),
             'uber_delivery_time': forms.TextInput(attrs={'class': 'form-control'}),
+            'uberlink': forms.TextInput(attrs={'class': 'form-control'}),
+            'doordashlink': forms.TextInput(attrs={'class': 'form-control'}),
             'doordash_delivery_time': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-
-    image_name = forms.FileField(required=True)
-    banner_name = forms.FileField(required=True)
+    image_name = forms.FileField(validators=[validate_image_extension],required=True)
+    banner_name = forms.FileField(validators=[validate_image_extension],required=True)
 
     def save(self, commit=True):
         RESTAURANT_ROOT = os.path.join(BASE_DIR, 'restaurants/static/restaurant')

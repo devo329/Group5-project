@@ -19,16 +19,80 @@
   <!--Bootstrap JS-->
 
   <!--Navbar-->
-  <nav class="navbar navbar-light" style="background-color: rgb(232, 218, 68);">
+  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: rgb(232, 218, 68);">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'index' %}">
         <!-- logo -->
         <img src="/static/logo.png" alt="" width="60" height="48" class="d-inline-block align-text-top">
       </a>
-      <form class="form-inline">
-        <a class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" href="{% url 'index' %}"
-          role="button">&#x2190; Go Back</a>
-      </form>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'deals' %}">Deals</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" style = "color: black;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Restaurants
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              {% for data in restaurant_rating_data %}
+              <li class="nav-item">
+                <a class="nav-link" style = "color: black;"  href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
+              </li>
+          {% endfor %}
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+              <li class="nav-item" style="padding-top: 8px;">
+                <a style = "color: black;" class="nav-link" href="#">Welcome, {{user.username}}</a>
+              </li>
+                {% if owner is None %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/register">
+                    <button type="submit" class="btn btn-outline-danger">Register as Owner</button>
+                  </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/dashboard?id={{owner.id}}">
+                    <button type="submit" class="btn btn-outline-danger">Owner Dashboard</button>
+                  </a>
+                </li>
+                {%endif%}
+
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">
+                  <button type="submit" class="btn btn-outline-danger">Logout</button>
+                </a>
+              </li>
+
+              {% else %}
+
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/login">
+                  <button type="submit" class="btn btn-outline-danger">Login</button>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/register">
+                  <button type="submit" class="btn btn-outline-danger">Sign Up</button>
+                </a>
+              </li>
+
+              {% endif %}
+            </ul>
+      </div>
+    </div>
   </nav>
 
   <!--Navbar-->
@@ -264,19 +328,18 @@
             alt="...">
           <div class="card-body">
             <h5 class="card-title">{{item.name}}</h5>
-            {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
-              {{item.doordash_price}}</p>
-              <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-              {% else %}
-              <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
-              <p style="color:red;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-              {% endif %}
+            {% if item.uber_price < item.doordash_price %}
+            <a href="{{doordash_link}}" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">Doordash Price: {{item.doordash_price}}</a>
+            <a href="{{uber_link}}" class="btn btn-outline-success" style=" border-color: green; hover-color: white;">UberEats Price: {{item.uber_price}}</a>
+            {% else %}
+            <a href="{{doordash_link}}" class="btn btn-outline-success" style=" border-color: green; hover-color: white;">Doordash Price: {{item.doordash_price}}</a>
+            <a href="{{uber_link}}" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">UberEats Price: {{item.uber_price}}</a>
+            {% endif %}
           </div>
         </div>
       </div>
       {% endfor %}
       <!-- Featured -->
-
 
       <!-- All Items -->
       <h2>All Items:</h2>
@@ -292,13 +355,13 @@
             alt="...">
           <div class="card-body">
             <h5 class="card-title">{{item.name}}</h5>
-            {% if item.uber_price < item.doordash_price %} <p style="color:red;" class="card-text">Doordash Price:
-              {{item.doordash_price}}</p>
-              <p style="color:green;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-              {% else %}
-              <p style="color:green;" class="card-text">Doordash Price: {{item.doordash_price}}</p>
-              <p style="color:red;" class="card-text">Uber Eats Price: {{item.uber_price}}</p>
-              {% endif %}
+            {% if item.uber_price < item.doordash_price %}
+            <a href="{{doordash_link}}" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">Doordash Price: {{item.doordash_price}}</a>
+            <a href="{{uber_link}}" class="btn btn-outline-success" style=" border-color: green; hover-color: white;">UberEats Price: {{item.uber_price}}</a>
+            {% else %}
+            <a href="{{doordash_link}}" class="btn btn-outline-success" style=" border-color: green; hover-color: white;">Doordash Price: {{item.doordash_price}}</a>
+            <a href="{{uber_link}}" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">UberEats Price: {{item.uber_price}}</a>
+            {% endif %}
           </div>
           <!-- Like Button -->
           <div class="card-footer d-flex align-items-end justify-content-end">
@@ -330,6 +393,7 @@
   <!--Cards-->
   <!-- Button trigger modal -->
 </body>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
   style="display: none;" aria-hidden="true">
@@ -455,18 +519,15 @@
           </div>
           <br>
           {% endfor %}
-
       </div>
     </div>
   </div>
 </div>
 
-
 <!-- FORM -->
 <div class="modal fade" id="exampleModalToggle2" aria-labelledby="exampleModalToggleLabel2" tabindex="-1"
   style="display: none;" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Write Your Review</h1>
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Write Your Review</h1>
@@ -532,7 +593,7 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" data-dismiss="modal"
+        <button class="btn btn-outline-danger" style=" border-color: red; hover-color: white;" data-bs-dismiss="modal"
           data-bs-target="#exampleModalToggle" data-bs-toggle="modal">&#x2190; Go Back</button>
       </div>
     </div>

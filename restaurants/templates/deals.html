@@ -72,7 +72,7 @@
               {% else %}
 
               <li class="nav-item">
-                <a class="nav-link" href="accounts/login">
+                <a class="nav-link" href="/accounts/login">
                   <button type="submit" class="btn btn-outline-danger">Login</button>
                 </a>
               </li>
@@ -88,7 +88,6 @@
       </div>
     </div>
   </nav>
-
   <!--Navbar-->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -107,59 +106,22 @@
     crossorigin="anonymous"></script>
   <!--Bootstrap JS-->
 
-
-
   <!--Cards-->
   <div class="row" style="padding: 50px">
-    <h3 style="text-align: center; padding-bottom:10px;">Restaurants</h3>
-    {% for data in restaurant_rating_data %}
+    <h3 style="text-align: center; padding-bottom:10px;">Deals</h3>
+    {% for deal in deals %}
     <div class="col-sm-4" style="padding-bottom: 20px;">
       <div class="card">
-        <img src="/static/restaurant/{{data.restaurant.image_name}}"
-        style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
+        <img src="/static/deals/{{deal.image_name}}"
+          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
         <div class="card-body">
-          <h5 class="card-title">{{data.restaurant.name}}</h5>
-          <!-- <p class="card-text"> Average Rating: {{ data.avg_rating }}</p> -->
-          <p class="card-text">
-            {%if data.avg_rating is None%}
-              No Reviews
-            {% elif data.avg_rating is 1%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            {% elif data.avg_rating is 2%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            {% elif data.avg_rating is 3%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            {% elif data.avg_rating is 4%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            {% elif data.avg_rating is 5%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            {% endif %}
-          </p>
-          <a href="/loading/restaurant/?id={{data.restaurant.name}}" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;">Menu</a>
+          <h4 class="card-title">{{deal.name}}</h4>
+          <h5 class="card-title">Code: {{deal.code}}</h5>
+          <p>{{deal.restaurant.name}}</p>
         </div>
       </div>
     </div>
-    {% endfor %}
+    {%endfor%}
   </div>
 
 

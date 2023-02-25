@@ -3,6 +3,7 @@ from .models import *
 from django.db.models import Avg, Count
 from .forms import *
 from .functions import *
+import re
 
 def getAndFormatCategories(restaurant):
     categories = FoodItem.objects.filter(menu__restaurant__name=restaurant).distinct(
@@ -128,3 +129,41 @@ def getMenu(id):
         menu = FoodItem.objects.filter(menu__restaurant__name=r.name)
         list.append({'name': r.name, 'menu': menu})
     return list
+
+def parse_mins(id):
+    info = Restaurant.objects.get(name=id)
+    uber_time = info.uber_delivery_time
+    doordash_time = info.doordash_delivery_time
+
+    match = re.search(r'^(\d+)', uber_time)
+    if match:
+        uber_time = int(match.group(1))
+
+    match = re.search(r'^(\d+)', doordash_time)
+    if match:
+        doordash_time = int(match.group(1))
+
+    return(uber_time,doordash_time)
+
+def getCompetition(all_restaurants,restaurants):
+    all_cuisines = set()
+    owner_cuisines = set()
+    all_restaurantsSet = set()
+    restaurantsSet = set()
+    for a in all_restaurants:
+        all_restaurantsSet.add(a)
+        all_cuisines.add(a.cuisine)
+
+    for a in restaurants:
+        restaurantsSet.add(a)
+        owner_cuisines.add(a.cuisine)
+
+    cuisines = all_cuisines.intersection(owner_cuisines)
+    not_owned = all_restaurantsSet.difference(restaurantsSet)
+
+    toReturn = []
+    for c in not_owned:
+        if c.cuisine in cuisines:
+            toReturn.append(c)
+
+    return toReturn

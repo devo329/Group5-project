@@ -2,11 +2,13 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls'), name = 'login'),
     path("register", views.register_request, name="register"),
     path("", views.index, name="index"),
+    path("deals", views.deals, name="deals"),
     path("owner/dashboard", views.create_restaurant, name = 'create-restaurant'),
-    path("loading/restaurant/", views.loading_screen,),
+    path("owner/register", views.register_owner, name = 'owner_registration'),
+    path("loading/restaurant/", views.loading_screen),
     path("restaurant/", views.restaurant,name='restaurant'),
     path('review/submit/', views.addReview, name='review_submit'),
     path('favorite/<restaurant_id>', views.favorite, name='favorite'),

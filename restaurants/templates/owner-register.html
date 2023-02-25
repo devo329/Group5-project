@@ -49,19 +49,6 @@
               <li class="nav-item" style="padding-top: 8px;">
                 <a style = "color: black;" class="nav-link" href="#">Welcome, {{user.username}}</a>
               </li>
-                {% if owner is None %}
-                <li class="nav-item">
-                  <a class="nav-link" href="/owner/register">
-                    <button type="submit" class="btn btn-outline-danger">Register as Owner</button>
-                  </a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                  <a class="nav-link" href="/owner/dashboard?id={{owner.id}}">
-                    <button type="submit" class="btn btn-outline-danger">Owner Dashboard</button>
-                  </a>
-                </li>
-                {%endif%}
 
               <li class="nav-item">
                 <a class="nav-link" href="/logout">
@@ -72,7 +59,7 @@
               {% else %}
 
               <li class="nav-item">
-                <a class="nav-link" href="/accounts/login">
+                <a class="nav-link" href="accounts/login">
                   <button type="submit" class="btn btn-outline-danger">Login</button>
                 </a>
               </li>
@@ -94,9 +81,6 @@
 </head>
 
 <body style="font-family: 'Rubik', sans-serif;">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
     <!--Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
       integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
@@ -110,18 +94,15 @@
   {% block content %}
 
   {% load crispy_forms_tags %}
-
   <!--Register-->
   <div class="container py-5">
-    <h1>Register</h1>
+    <h1>Register as Owner</h1>
     <form method="POST">
       {% csrf_token %}
       {{ register_form|crispy }}
       <button class="btn btn-outline-danger " type="submit">Register</button>
     </form>
-    <p class="text-center">If you already have an account, <a href="accounts/login">login</a> instead.</p>
   </div>
-
   {% endblock %}
   </div>
 </div>
