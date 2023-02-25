@@ -10,6 +10,19 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 
 
+
+@login_required
+def clip_deal(request, deal_id):
+    if request.method == 'POST':
+        deal = Deals.objects.get(id=deal_id)
+
+    if request.user not in deal.clippers.all():
+        deal.clipped += 1
+        deal.clippers.add(request.user)
+        deal.save()
+
+    return redirect(reverse('deals'))
+
 def deals(request):
     restaurants = Restaurant.objects.all()
     restaurant_rating_data = getRatings(restaurants)
@@ -26,6 +39,10 @@ def deals(request):
 def loading_screen(request):
     return render(request, 'loading.html')
 
+def user_dashboard(request):
+    id = request.GET.get('id')
+    print(id)
+    return render(request, 'user-dashboard.html')
 
 def index(request):
     restaurants = Restaurant.objects.all()
