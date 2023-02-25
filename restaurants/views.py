@@ -194,6 +194,7 @@ def logout_request(request):
     messages.info(request, "You have successfully logged out.")
     return redirect("index")
 
+
 @login_required
 def create_restaurant(request):
     id = request.GET.get('id')
@@ -249,8 +250,9 @@ def create_restaurant(request):
     avg_rating = avgRatings(id)
     menu = getMenu(id)
     deals = Deals.objects.filter(owner_id=id)
-
     all_restaurants = Restaurant.objects.all()
+
+    competition = getRatings(getCompetition(all_restaurants,restaurants))
     restaurant_rating_data2 = getRatings(all_restaurants)
     owner = ""
     try:
@@ -272,6 +274,6 @@ def create_restaurant(request):
         'restaurants_owned': restaurants_owned,
         'rating': avg_rating,
         'owner': owner,
-
+        'competition' : competition
     }
     return render(request, 'owner-dashboard.html', context)

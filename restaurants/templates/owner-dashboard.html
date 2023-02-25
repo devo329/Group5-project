@@ -30,7 +30,8 @@
         <!-- logo -->
         <img src="/static/logo.png" alt="" width="60" height="48" class="d-inline-block align-text-top">
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -42,47 +43,49 @@
             <a class="nav-link active" aria-current="page" href="{% url 'deals' %}">Deals</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" style = "color: black;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" style="color: black;" href="#" id="navbarDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
               Restaurants
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% for data in restaurant_rating_data2 %}
               <li class="nav-item">
-                <a class="nav-link" style = "color: black;"  href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
+                <a class="nav-link" style="color: black;"
+                  href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
               </li>
-          {% endfor %}
+              {% endfor %}
             </ul>
           </li>
         </ul>
 
         <ul class="navbar-nav mb-2 mb-lg-0">
           {% if user.is_authenticated %}
-              <li class="nav-item" style="padding-top: 8px;">
-                <a style = "color: black;" class="nav-link" href="#">Welcome, {{user.username}}</a>
-              </li>
+          <li class="nav-item" style="padding-top: 8px;">
+            <a style="color: black;" class="nav-link" href="#">Welcome, {{user.username}}</a>
+          </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="/logout">
-                  <button type="submit" class="btn btn-outline-danger">Logout</button>
-                </a>
-              </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">
+              <button type="submit" class="btn btn-outline-danger">Logout</button>
+            </a>
+          </li>
 
-              {% else %}
+          {% else %}
 
-              <li class="nav-item">
-                <a class="nav-link" href="accounts/login">
-                  <button type="submit" class="btn btn-outline-danger">Login</button>
-                </a>
-              </li>
+          <li class="nav-item">
+            <a class="nav-link" href="accounts/login">
+              <button type="submit" class="btn btn-outline-danger">Login</button>
+            </a>
+          </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="/register">
-                  <button type="submit" class="btn btn-outline-danger">Sign Up</button>
-                </a>
-              </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register">
+              <button type="submit" class="btn btn-outline-danger">Sign Up</button>
+            </a>
+          </li>
 
-              {% endif %}
-            </ul>
+          {% endif %}
+        </ul>
       </div>
     </div>
   </nav>
@@ -155,7 +158,7 @@
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
-              <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+              <a style="cursor: pointer;">
                 <h5 style="color: black; text-decoration: underline;" class="card-title hover-underline-animation">
                   Average Ratings:</h5>
               </a>
@@ -201,141 +204,177 @@
     </div>
   </div>
 
-  <!-- Banner Info -->
-  <style>
-    .hover-underline-animation {
-      display: inline-block;
-      position: relative;
-      color: #0087ca;
-    }
-
-    .hover-underline-animation::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      transform: scaleX(0);
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-color: #0087ca;
-      transform-origin: bottom right;
-      transition: transform 0.25s ease-out;
-    }
-
-    .hover-underline-animation:hover::after {
-      transform: scaleX(1);
-      transform-origin: bottom left;
-    }
-  </style>
   <!-- Restaurant Info -->
+  <!-- Owner Information Summary -->
 
-  <!--Cards-->
-
-  <!--Cards-->
-  <div class="row" style="padding: 50px">
-    <h2 style="padding-bottom:10px;">Your Restaurants:</h2>
-    <hr>
-    <div class="col-sm-4" style="padding-bottom: 20px;">
-      <div class="card">
-        <img src="https://cwdaust.com.au/wpress/wp-content/uploads/2015/04/placeholder-restaurant.png"
-          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Add a Restaurant</h5>
-          <p><br></p>
-          <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
-            data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-            Add a Restaurant
-          </button>
-        </div>
-      </div>
+  <div class="container my-3">
+    <div class="col-md-12 text-center" style="padding: 10px;">
+      <a href="#restaurantheading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white; margin-right: 10px;">Restaurants</a>
+      <a href="#dealsheading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;margin-right: 10px;">Deals</a>
+      <a href="#competitionsheading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;margin-right: 10px;">Competition</a>
     </div>
-
-    {% for data in restaurant_rating_data %}
-    <div class="col-sm-4" style="padding-bottom: 20px;">
-      <div class="card">
-        <img src="/static/restaurant/{{data.restaurant.image_name}}" style="height: 300px; object-fit: cover;"
-          class="card-img-top " alt="...">
-        <div class="card-body">
-          <h5 class="card-title">{{data.restaurant.name}}</h5>
-          <!-- <p class="card-text"> Average Rating: {{ data.avg_rating }}</p> -->
-          <p class="card-text">
-            {%if data.avg_rating is None%}
-            No Reviews
-            {% elif data.avg_rating is 1%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            {% elif data.avg_rating is 2%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            {% elif data.avg_rating is 3%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            {% elif data.avg_rating is 4%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: #999" class="fa fa-star"></i>
-            {% elif data.avg_rating is 5%}
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            <i style="color: gold" class="fa fa-star"></i>
-            {% endif %}
-          </p>
-          <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
-            data-bs-toggle="modal" data-bs-target="#exampleModalToggle-{{data.restaurant.id}}">
-            Menu
-          </button>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
   </div>
 
-  <div class="row" style="padding: 50px">
-    <h2 style="padding-bottom:10px;">Your Deals:</h2>
-    <hr>
-    <div class="col-sm-4" style="padding-bottom: 20px;">
-      <div class="card">
-        <img src="/static/banners/discount.png"
-          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Add a Deal</h5>
-          <p><br></p>
-          <button type="button" class="btn btn-outline-danger" data-bs-target="#DealsToggle" data-bs-toggle="modal" data-bs-dismiss="modal" style=" border-color: red; hover-color: white;">
-            Add a Deal
-          </button>
+  <div data-bs-spy="scroll" tabindex="0">
+    <!--Cards-->
+    <div class="row" style="padding: 50px">
+      <h2 id="restaurantheading" style="padding-bottom:10px;">Your Restaurants:</h2>
+      <hr>
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="https://cwdaust.com.au/wpress/wp-content/uploads/2015/04/placeholder-restaurant.png"
+            style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Add a Restaurant</h5>
+            <p><br></p>
+            <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
+              data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+              Add a Restaurant
+            </button>
+          </div>
         </div>
       </div>
+
+      {% for data in restaurant_rating_data %}
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="/static/restaurant/{{data.restaurant.image_name}}" style="height: 300px; object-fit: cover;"
+            class="card-img-top " alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{data.restaurant.name}}</h5>
+            <!-- <p class="card-text"> Average Rating: {{ data.avg_rating }}</p> -->
+            <p class="card-text">
+              {%if data.avg_rating is None%}
+              No Reviews
+              {% elif data.avg_rating is 1%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif data.avg_rating is 2%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif data.avg_rating is 3%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif data.avg_rating is 4%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif data.avg_rating is 5%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              {% endif %}
+            </p>
+            <button type="button" class="btn btn-outline-danger" style=" border-color: red; hover-color: white;"
+              data-bs-toggle="modal" data-bs-target="#exampleModalToggle-{{data.restaurant.id}}">
+              Menu
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
 
-    {% for deal in deals %}
-    <div class="col-sm-4" style="padding-bottom: 20px;">
-      <div class="card">
-        <img src="/static/deals/{{deal.image_name}}"
-          style="height: 300px; object-fit: cover;" class="card-img-top " alt="...">
-        <div class="card-body">
-          <h4 class="card-title">{{deal.name}}</h4>
-          <h5 class="card-title">Code: {{deal.code}}</h5>
-          <p>{{deal.restaurant.name}}</p>
+    <div class="row" style="padding: 50px">
+      <h2 id="dealsheading" style="padding-bottom:10px;">Your Deals:</h2>
+      <hr>
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="/static/banners/discount.png" style="height: 300px; object-fit: cover;" class="card-img-top "
+            alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Add a Deal</h5>
+            <p><br></p>
+            <button type="button" class="btn btn-outline-danger" data-bs-target="#DealsToggle" data-bs-toggle="modal"
+              data-bs-dismiss="modal" style=" border-color: red; hover-color: white;">
+              Add a Deal
+            </button>
+          </div>
         </div>
       </div>
+
+      {% for deal in deals %}
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="/static/deals/{{deal.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top "
+            alt="...">
+          <div class="card-body">
+            <h4 class="card-title">{{deal.name}}</h4>
+            <h5 class="card-title">Code: {{deal.code}}</h5>
+            <p>{{deal.restaurant.name}}</p>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
     </div>
-    {%endfor%}
+
+    <div class="row" style="padding: 50px">
+      <h3 id="competitionsheading" style="text-align: center; padding-bottom:10px;">Your Competition</h3>
+      {% for data in competition %}
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+        <div class="card">
+          <img src="/static/restaurant/{{data.restaurant.image_name}}" style="height: 300px; object-fit: cover;"
+            class="card-img-top " alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{data.restaurant.name}}</h5>
+            <!-- <p class="card-text"> Average Rating: {{ data.avg_rating }}</p> -->
+            <p class="card-text">
+              {%if data.avg_rating is None%}
+              No Reviews
+              {% elif data.avg_rating is 1%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif data.avg_rating is 2%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif data.avg_rating is 3%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif data.avg_rating is 4%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: #999" class="fa fa-star"></i>
+              {% elif data.avg_rating is 5%}
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              <i style="color: gold" class="fa fa-star"></i>
+              {% endif %}
+            </p>
+            <a href="/loading/restaurant/?id={{data.restaurant.name}}" class="btn btn-outline-danger"
+              style=" border-color: red; hover-color: white;">Menu</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
   </div>
-
-
 </body>
 
 {% for data in restaurant_rating_data %}
@@ -357,7 +396,9 @@
         {%endfor%}
         {%endif%}
         {%endfor%}
-        <button type="button" class="btn btn-outline-danger" data-bs-target="#exampleModalToggle2-{{data.restaurant.id}}" data-bs-toggle="modal" data-bs-dismiss="modal" style=" border-color: red; hover-color: white;">
+        <button type="button" class="btn btn-outline-danger"
+          data-bs-target="#exampleModalToggle2-{{data.restaurant.id}}" data-bs-toggle="modal" data-bs-dismiss="modal"
+          style=" border-color: red; hover-color: white;">
           Add a Menu Item
         </button>
       </div>
@@ -366,7 +407,8 @@
 </div>
 
 <!-- Food Item Form -->
-<div class="modal fade" id="exampleModalToggle2-{{data.restaurant.id}}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2-{{data.restaurant.id}}" tabindex="-1">
+<div class="modal fade" id="exampleModalToggle2-{{data.restaurant.id}}" aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel2-{{data.restaurant.id}}" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -467,6 +509,16 @@
           </div>
           <br>
           <div class="form-group">
+            <label for="id_doordash_delivery_time"> DoorDash Homepage</label>
+            {{ form.uberlink }}
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="id_doordash_delivery_time"> UberEats Homepage</label>
+            {{ form.doordashlink }}
+          </div>
+          <br>
+          <div class="form-group">
             <label for="id_image_name">Image Name</label>
             <br>
             {{ form.image_name }}
@@ -487,8 +539,8 @@
 </div>
 
 
-<div class="modal fade" id="DealsToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
-  style="display: none;" aria-hidden="true">
+<div class="modal fade" id="DealsToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1" style="display: none;"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -501,7 +553,7 @@
           <input type="hidden" name="form_type" value="deals_form">
           {{ deals_form.as_p }}
           <button type="submit" class="btn btn-outline-danger"
-          style=" border-color: red; hover-color: white;">Submit</button>
+            style=" border-color: red; hover-color: white;">Submit</button>
         </form>
       </div>
     </div>
