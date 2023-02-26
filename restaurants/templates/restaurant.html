@@ -253,12 +253,34 @@
 
   <!--Cards-->
   <!-- Menu -->
+
+  <div class="container my-3">
+    <div class="col-md-12 text-center scrolldiv" style="padding: 10px;">
+      <a href="#featuredheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">Featured</a>
+      {%for category in categories%}
+      <a href="#{{category}}heading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">{{category}}</a>
+      {%endfor%}
+    </div>
+  </div>
+  <hr>
+<style>
+.scrolldiv {
+  display: flex;
+  justify-content: space-around;
+}
+.scrollbutton {
+  width: 100%;
+  margin: 5px; /* or whatever you like */
+}
+</style>
+
+<div data-bs-spy="scroll" tabindex="0">
   <div class="row" style="padding: 50px; font-family: 'Rubik', sans-serif;">
-    <h1>Menu</h2>
+    <h1>Menu</h1>
       <hr>
       <br>
       <!-- Featured -->
-      <h2>Featured:</h2>
+      <h2 id="featuredheading">Featured:</h2>
       <hr>
       {% for item in featured %}
       <div class="col-sm-4" style="padding-bottom: 20px;">
@@ -284,7 +306,7 @@
       <h2>All Items:</h2>
       <hr>
       {% for category in categories%}
-      <h2>{{category}}</h2>
+      <h2 id="{{category}}heading">{{category}}</h2>
       <hr>
       {% for item in menu %}
       {%if item.type in category%}
@@ -329,6 +351,7 @@
       {% endfor %}
       {% endfor %}
   </div>
+</div>
   <!--Cards-->
   <!-- Button trigger modal -->
 </body>
