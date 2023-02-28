@@ -21,6 +21,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
   <!--Bootstrap JS-->
 
   <!--Navbar-->
@@ -30,62 +31,72 @@
         <!-- logo -->
         <img src="/static/logo.png" alt="" width="60" height="48" class="d-inline-block align-text-top">
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+            <a class="nav-link active" style = "color: black;" aria-current="page" href="{% url 'index' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'deals' %}">Deals</a>
+            <a class="nav-link active" style = "color: black;" aria-current="page" href="{% url 'deals' %}">Deals</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" style="color: black;" href="#" id="navbarDropdown" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" style = "color: black;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Restaurants
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% for data in restaurant_rating_data2 %}
               <li class="nav-item">
-                <a class="nav-link" style="color: black;"
-                  href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
+                <a class="nav-link" style = "color: black;"  href="/restaurant/?id={{data.restaurant.name}}">{{data.restaurant.name}}</a>
               </li>
-              {% endfor %}
+          {% endfor %}
             </ul>
           </li>
         </ul>
 
         <ul class="navbar-nav mb-2 mb-lg-0">
           {% if user.is_authenticated %}
-          <li class="nav-item" style="padding-top: 8px;">
-            <a style="color: black;" class="nav-link" href="#">Welcome, {{user.username}}</a>
-          </li>
+              <li class="nav-item" style="padding-top: 8px;">
+                <a style = "color: black;" class="nav-link" href="/user/dashboard?id={{user.id}}">Welcome, {{user.username}}</a>
+              </li>
+                {% if owner is None %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/register">
+                    <button type="submit" class="btn btn-outline-danger">Register as Owner</button>
+                  </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/dashboard?id={{owner.id}}">
+                    <button type="submit" class="btn btn-outline-danger">Owner Dashboard</button>
+                  </a>
+                </li>
+                {%endif%}
 
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">
-              <button type="submit" class="btn btn-outline-danger">Logout</button>
-            </a>
-          </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">
+                  <button type="submit" class="btn btn-outline-danger">Logout</button>
+                </a>
+              </li>
 
-          {% else %}
+              {% else %}
 
-          <li class="nav-item">
-            <a class="nav-link" href="accounts/login">
-              <button type="submit" class="btn btn-outline-danger">Login</button>
-            </a>
-          </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/accounts/login">
+                  <button type="submit" class="btn btn-outline-danger">Login</button>
+                </a>
+              </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="/register">
-              <button type="submit" class="btn btn-outline-danger">Sign Up</button>
-            </a>
-          </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">
+                  <button type="submit" class="btn btn-outline-danger">Sign Up</button>
+                </a>
+              </li>
 
-          {% endif %}
-        </ul>
+              {% endif %}
+            </ul>
       </div>
     </div>
   </nav>
@@ -158,9 +169,9 @@
         <div class="col-sm-3" style="padding-bottom: 10px;">
           <div class="card">
             <div class="card-body">
-              <a style="cursor: pointer;">
+              <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#reviewsModal">
                 <h5 style="color: black; text-decoration: underline;" class="card-title hover-underline-animation">
-                  Average Ratings:</h5>
+                  Ratings:</h5>
               </a>
               <h5 style="color:black" class="card-text">
                 {%if rating is None%}
@@ -210,6 +221,7 @@
   <div class="container my-3">
     <div class="col-md-12 text-center scrolldiv" style="padding: 10px;">
       <a href="#restaurantheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">Restaurants</a>
+      <a href="#itemsheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">Food Items</a>
       <a href="#dealsheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white;margin-right: 10px;">Deals</a>
       <a href="#competitionsheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white;margin-right: 10px;">Competition</a>
     </div>
@@ -299,6 +311,30 @@
       </div>
       {% endfor %}
     </div>
+
+    <div class="row" style="padding: 50px">
+      <h2 id="itemsheading" style="padding-bottom:10px;">Your Best Items:</h2>
+      <hr>
+      {% for item in food_items %}
+      <div class="col-sm-4" style="padding-bottom: 20px;">
+      <div class="card">
+        <img src="/static/fooditem/{{item.image_name}}" style="height: 300px; object-fit: cover;" class="card-img-top"
+          alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{item.name}}</h5>
+          <br>
+        </div>
+        <!-- Like Button -->
+        <div class="card-footer d-flex align-items-end justify-content-end">
+          <button class="button button-like">
+            <i class="fa fa-heart"></i>
+            <span>Likes: {{ item.likes }} </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+  </div>
 
     <div class="row" style="padding: 50px">
       <h2 id="dealsheading" style="padding-bottom:10px;">Your Deals:</h2>
@@ -573,5 +609,128 @@
   </div>
 </div>
 
+<div class="modal fade" id="reviewsModal" aria-labelledby="reviewsModal" tabindex="-1"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Reviews</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card text-center">
+          <h5 class="card-header">Overview</h5>
+          <div class="card-body">
+            {% for c in distributions %}
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+              <div style="width: 100px; text-align: right; margin-right: 10px;">{{c.rating}} <i style="color: gold"
+                  class="fa fa-star"></i></div>
+              <div class="progress" style="width: 50%; flex-grow: 1;">
+                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="{{ c.distribution }}"
+                  aria-valuemin="0" aria-valuemax="100" style="width: {{ c.distribution }}%;">
+                </div>
+              </div>
+            </div>
+            <br>
+            {% endfor %}
+            <h5 class="card-title">
+              <h5 class="card-title">
+                {%if rating is None%}
+                No Reviews
+                {% elif rating is 1%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif rating is 2%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif rating is 3%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif rating is 4%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif rating is 5%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                {% endif %}
+              </h5>
+              {%if rating is None%}
+              <p class="card-text">Your restaurant(s) have not been rated yet</p>
+              {% else %}
+              <p class="card-text">Your restaurants have {{num_reviews}} reviews with an average rating of {{rating}}.0</p>
+              {%endif%}
+          </div>
+        </div>
+
+        <h5 class="card-title">
+          <br>
+          {% for review in reviews%}
+          <div class="card">
+            <div class="card-header">
+              {{review.restaurant}} : {{review.reviewer}}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">
+                {%if rating is None%}
+                No Reviews
+                {% elif review.rating is 1%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif review.rating is 2%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif review.rating is 3%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif review.rating is 4%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: #999" class="fa fa-star"></i>
+                {% elif review.rating is 5%}
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                <i style="color: gold" class="fa fa-star"></i>
+                {% endif %}
+              </h5>
+              <p class="card-text">{{review.review}}</p>
+            </div>
+            <div class="card-footer text-muted">
+              {{review.created_at}}
+            </div>
+          </div>
+          <br>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
 
 </html>

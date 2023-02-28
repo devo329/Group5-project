@@ -25,10 +25,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+            <a class="nav-link active" style = "color: black;" aria-current="page" href="{% url 'index' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'deals' %}">Deals</a>
+            <a class="nav-link active" style = "color: black;" aria-current="page" href="{% url 'deals' %}">Deals</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" style = "color: black;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,8 +47,21 @@
         <ul class="navbar-nav mb-2 mb-lg-0">
           {% if user.is_authenticated %}
               <li class="nav-item" style="padding-top: 8px;">
-                <a style = "color: black;" class="nav-link" href="#">Welcome, {{user.username}}</a>
+                <a style = "color: black;" class="nav-link" href="/user/dashboard?id={{user.id}}">Welcome, {{user.username}}</a>
               </li>
+                {% if owner is None %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/register">
+                    <button type="submit" class="btn btn-outline-danger">Register as Owner</button>
+                  </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/owner/dashboard?id={{owner.id}}">
+                    <button type="submit" class="btn btn-outline-danger">Owner Dashboard</button>
+                  </a>
+                </li>
+                {%endif%}
 
               <li class="nav-item">
                 <a class="nav-link" href="/logout">
@@ -59,7 +72,7 @@
               {% else %}
 
               <li class="nav-item">
-                <a class="nav-link" href="accounts/login">
+                <a class="nav-link" href="/accounts/login">
                   <button type="submit" class="btn btn-outline-danger">Login</button>
                 </a>
               </li>
@@ -78,6 +91,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 </head>
 
 <body style="font-family: 'Rubik', sans-serif;">
@@ -108,5 +122,6 @@
 </div>
 
 </body>
+
 
 </html>
