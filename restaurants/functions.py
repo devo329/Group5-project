@@ -57,9 +57,13 @@ def getReviews(id,type):
         reviews = Reviews.objects.filter(restaurant__name=id).all()
         reviews_count = Reviews.objects.filter(restaurant__name=id).values(
         'rating').annotate(c=Count('rating')).order_by('rating')
-    else:
+    elif type == 'user':
         reviews = Reviews.objects.filter(reviewer=id).all()
         reviews_count = Reviews.objects.filter(reviewer=id).values(
+        'rating').annotate(c=Count('rating')).order_by('rating')
+    else:
+        reviews = Reviews.objects.filter(restaurant__in = id)
+        reviews_count = Reviews.objects.filter(restaurant__in = id).values(
         'rating').annotate(c=Count('rating')).order_by('rating')
 
     toReturn = []
@@ -94,13 +98,11 @@ def getReviews(id,type):
 
 def getNumLikes(id):
     menus = Menu.objects.filter(restaurant__owner = id)
-    food_items_list = []
-    for m in menus:
-        food_items_list = FoodItem.objects.filter(menu = m)
+    items = FoodItem.objects.filter(menu__in = menus)
 
     likes = 0
-    for item in food_items_list:
-        likes = likes + item.likes
+    for i in items:
+        likes = likes + i.likes
 
     return likes
 

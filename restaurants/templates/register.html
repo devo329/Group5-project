@@ -26,10 +26,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+            <a class="nav-link active" style = "color: black;" aria-current="page" href="{% url 'index' %}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'deals' %}">Deals</a>
+            <a class="nav-link active" style = "color: black;" aria-current="page" href="{% url 'deals' %}">Deals</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" style = "color: black;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,7 +48,7 @@
         <ul class="navbar-nav mb-2 mb-lg-0">
           {% if user.is_authenticated %}
               <li class="nav-item" style="padding-top: 8px;">
-                <a style = "color: black;" class="nav-link" href="#">Welcome, {{user.username}}</a>
+                <a style = "color: black;" class="nav-link" href="/user/dashboard?id={{user.id}}">Welcome, {{user.username}}</a>
               </li>
                 {% if owner is None %}
                 <li class="nav-item">

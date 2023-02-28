@@ -63,6 +63,14 @@ def user_dashboard(request):
     else:
         rating = sum/count
 
+    restaurants = Restaurant.objects.all()
+    restaurant_rating_data = getRatings(restaurants)
+    owner = ""
+    try:
+        owner = Owner.objects.get(user=request.user)
+    except:
+        owner = None
+
     context = {
         'favorited' : favorited,
         'clipped' : clipped,
@@ -74,7 +82,9 @@ def user_dashboard(request):
         'reviewed' : len(reviews),
         'count' : count,
         'distributions' : distributed_list,
-        'rating' : int(rating)
+        'rating' : int(rating),
+        'owner' : owner,
+        'restaurant_rating_data' : restaurant_rating_data
     }
     return render(request, 'user-dashboard.html', context)
 
@@ -303,6 +313,8 @@ def create_restaurant(request):
     deals = Deals.objects.filter(owner_id=id)
     all_restaurants = Restaurant.objects.all()
 
+    menu_id  = Menu.objects.filter(restaurant__in = restaurants)
+    food_items = FoodItem.objects.filter(menu__in = menu_id).order_by('-likes')[:9]
     competition = getRatings(getCompetition(all_restaurants,restaurants))
     restaurant_rating_data2 = getRatings(all_restaurants)
     owner = ""
@@ -310,6 +322,9 @@ def create_restaurant(request):
         owner = Owner.objects.get(user=request.user)
     except:
         owner = None
+
+    num_reviews, reviews1, count, distributed_list = getReviews(restaurants,'owner')
+
 
     context = {
         'deals_form': deals_form,
@@ -325,6 +340,12 @@ def create_restaurant(request):
         'restaurants_owned': restaurants_owned,
         'rating': avg_rating,
         'owner': owner,
-        'competition' : competition
+        'competition' : competition,
+        'num_reviews' : num_reviews,
+        'reviews' : reviews1,
+        'count' : count,
+        'distributions' : distributed_list,
+        'food_items' : food_items
     }
+
     return render(request, 'owner-dashboard.html', context)
