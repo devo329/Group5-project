@@ -84,3 +84,9 @@
     </div>
   </div>
   <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Open first modal</button>
+
+
+  {% for c in cuisines %}
+  {%if data.restaurant.cuisine == c %}
+  {%endif%}
+  {%endfor%}

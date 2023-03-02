@@ -255,23 +255,13 @@
 
   <div class="container my-3">
     <div class="col-md-12 text-center scrolldiv" style="padding: 10px;">
-      <a href="#featuredheading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">Featured</a>
+      <a href="#featuredheading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white; margin-right: 10px; margin-bottom: 10px;">Featured</a>
       {%for category in categories%}
-      <a href="#{{category}}heading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px;">{{category}}</a>
+      <a href="#{{category}}heading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white; margin-right: 10px; margin-bottom: 10px;">{{category}}</a>
       {%endfor%}
     </div>
   </div>
   <hr>
-<style>
-.scrolldiv {
-  display: flex;
-  justify-content: space-around;
-}
-.scrollbutton {
-  width: 100%;
-  margin: 5px; /* or whatever you like */
-}
-</style>
 
 <div data-bs-spy="scroll" tabindex="0">
   <div class="row" style="padding: 50px; font-family: 'Rubik', sans-serif;">

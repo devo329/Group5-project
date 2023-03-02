@@ -97,9 +97,11 @@ def index(request):
     except:
         owner = None
 
-    context = {'restaurant_rating_data': restaurant_rating_data, 'owner': owner}
-    return render(request, "index.html", context)
+    cuisines = Restaurant.objects.values('cuisine').distinct().order_by('cuisine')
+    print(cuisines)
 
+    context = {'restaurant_rating_data': restaurant_rating_data, 'owner': owner, 'cuisines':cuisines}
+    return render(request, "index.html", context)
 
 def restaurant(request):
     id = request.GET.get('id')

@@ -107,11 +107,23 @@
     crossorigin="anonymous"></script>
   <!--Bootstrap JS-->
 
-
   <!--Cards-->
   <div class="row" style="padding: 50px">
-    <h3 style="text-align: center; padding-bottom:10px;">Restaurants</h3>
+    <h1 style="text-align: center; padding-bottom:10px;">Restaurants</h1>
+    <hr>
+    <div class="container my-3">
+      <div class="col-md-12 text-center scrolldiv" style="padding: 10px;">
+        {%for c in cuisines%}
+        <a href="#{{c.cuisine}}heading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white; margin-right: 10px; margin-bottom: 10px;">{{c.cuisine}}</a>
+        {%endfor%}
+      </div>
+    </div>
+    <hr>
+    {% for c in cuisines%}
+    <h2 id="{{c.cuisine}}heading">{{c.cuisine}}</h2>
+    <hr>
     {% for data in restaurant_rating_data %}
+    {%if data.restaurant.cuisine in c.cuisine%}
     <div class="col-sm-4" style="padding-bottom: 20px;">
       <div class="card">
         <img src="/static/restaurant/{{data.restaurant.image_name}}"
@@ -158,6 +170,8 @@
         </div>
       </div>
     </div>
+    {%endif%}
+    {%endfor%}
     {% endfor %}
   </div>
 
