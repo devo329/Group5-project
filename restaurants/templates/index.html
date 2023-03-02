@@ -107,6 +107,16 @@
     crossorigin="anonymous"></script>
   <!--Bootstrap JS-->
 
+  <style>
+  .scrolldiv {
+  display: flex;
+  justify-content: space-around;
+  }
+  .scrollbutton {
+    width: 100%;
+    margin: 5px; /* or whatever you like */
+  }
+  </style>
   <!--Cards-->
   <div class="row" style="padding: 50px">
     <h1 style="text-align: center; padding-bottom:10px;">Restaurants</h1>
@@ -114,7 +124,7 @@
     <div class="container my-3">
       <div class="col-md-12 text-center scrolldiv" style="padding: 10px;">
         {%for c in cuisines%}
-        <a href="#{{c.cuisine}}heading" class="btn btn-outline-danger" style=" border-color: red; hover-color: white; margin-right: 10px; margin-bottom: 10px;">{{c.cuisine}}</a>
+        <a href="#{{c.cuisine}}heading" class="btn btn-outline-danger scrollbutton" style=" border-color: red; hover-color: white; margin-right: 10px; margin-bottom: 10px;">{{c.cuisine}}</a>
         {%endfor%}
       </div>
     </div>
