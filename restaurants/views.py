@@ -98,7 +98,6 @@ def index(request):
         owner = None
 
     cuisines = Restaurant.objects.values('cuisine').distinct().order_by('cuisine')
-    print(cuisines)
 
     context = {'restaurant_rating_data': restaurant_rating_data, 'owner': owner, 'cuisines':cuisines}
     return render(request, "index.html", context)
