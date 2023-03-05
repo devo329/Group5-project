@@ -25,7 +25,7 @@ class FoodItem(models.Model):
         return self.name
 
 class Restaurant(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique = True)
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=10)
     cuisine = models.CharField(max_length=20) #food type
